@@ -7,6 +7,8 @@ import Controls from './Controls';
 import NeonTitle from './NeonTitle';
 import TeamInfoBox from './TeamInfoBox';
 import CountryDashboard from './CountryDashboard';
+import GlobalDashboard from "./GlobalDashboard"; 
+import { Globe } from 'lucide-react';
 
 
 const AnimatedCountryHeader = ({ country }) => {
@@ -65,6 +67,7 @@ const InteractiveGlobe = () => {
     const markersRef = useRef([]);
     const [rotationSpeed, setRotationSpeed] = useState(0.0001); // Agregar el estado de velocidad de rotación
     const [isPlaying, setIsPlaying] = useState(true); // Estado para manejar la pausa y reproducción
+    const [showGlobal, setShowGlobal] = useState(false);
 
     useEffect(() => {
         // Basic setup
@@ -405,24 +408,37 @@ const InteractiveGlobe = () => {
     const handlePause = () => {
         setIsPlaying((prevIsPlaying) => !prevIsPlaying);
     };
+
+
     return (
         <div className="relative w-full h-screen">
-            <div 
-                ref={mountRef} 
-                className="w-full h-screen bg-black"
-                style={{ cursor: 'grab' }}
-            />
+            <div ref={mountRef} className="w-full h-screen bg-black" style={{ cursor: 'grab' }} />
             
             <NeonTitle />
             
             {selectedCountry && <AnimatedCountryHeader country={selectedCountry} />}
             
-            <Controls
-                onPause={handlePause}
-                isPlaying={isPlaying}
-            />
+            <Controls onPause={handlePause} isPlaying={isPlaying} />
             
-            <TeamInfoBox /> {/* Agregar esta línea */}
+            <TeamInfoBox />
+
+            {/* Botón Global Stats */}
+            <div className="fixed bottom-8 left-8 z-50">
+                <button
+                    onClick={() => setShowGlobal(!showGlobal)}
+                    className="flex items-center gap-2 px-4 py-2 bg-black/70 text-white rounded-lg border border-gray-700 hover:bg-black/90 transition-all duration-300 backdrop-blur-md"
+                >
+                    <Globe size={20} />
+                    Global Stats
+                </button>
+            </div>
+
+            {/* Global Dashboard */}
+            <GlobalDashboard 
+                isVisible={showGlobal} 
+                onClose={() => setShowGlobal(false)} 
+            />
+
             {selectedCountry && <CountryDashboard 
                 country={selectedCountry}
                 controlsRef={controlsRef}
@@ -433,20 +449,8 @@ const InteractiveGlobe = () => {
                     }
                 }} 
             />}
-            
-            
         </div>
     );
-    
-    
-
-
-
-
-    
-
-    
-    
 };
   
   
