@@ -2,37 +2,40 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as TWEEN from '@tweenjs/tween.js';
-import countriesData from './countries.json'; // Necesitarás crear este archivo
+import countriesData from './countries.json';
 import Controls from './Controls';
 import NeonTitle from './NeonTitle';
 import TeamInfoBox from './TeamInfoBox';
 import CountryDashboard from './CountryDashboard';
-import GlobalDashboard from "./GlobalDashboard"; 
-import { Globe } from 'lucide-react';
+import GlobalDashboard from "./GlobalDashboard";
+import { Activity, Globe, ChartBar } from 'lucide-react';
+import SimulationDashboard from './SimulationDashboard';
+import PredictionsDashboard from './PredictionsDashboard';
+import GlobalPredictionsWindow from './GlobalPredictionsWindow';
 
 
 const AnimatedCountryHeader = ({ country }) => {
     return (
-      <div className="fixed top-24 left-4 z-50"> {/* Cambiado de top-4 a top-24 */}
-        <div className="flex flex-col items-center gap-2">
-          <div className="flag-container w-40 h-24 relative overflow-hidden rounded-lg shadow-lg">
-            <div 
-              className="flag-static w-full h-full"
-              style={{
-                background: `url(https://flagcdn.com/w160/${country.code.toLowerCase()}.png) no-repeat center center`,
-                backgroundSize: 'contain',
-                backgroundColor: '#f0f0f0'
-              }}
-            />
-          </div>
-          <div className="text-content">
-            <h1 className="text-white text-3xl font-bold tracking-wider bg-black bg-opacity-50 px-4 py-2 rounded text-center">
-              {country.name}
-            </h1>
-          </div>
-        </div>
+        <div className="fixed top-24 left-4 z-50"> {/* Cambiado de top-4 a top-24 */}
+            <div className="flex flex-col items-center gap-2">
+                <div className="flag-container w-40 h-24 relative overflow-hidden rounded-lg shadow-lg">
+                    <div
+                        className="flag-static w-full h-full"
+                        style={{
+                            background: `url(https://flagcdn.com/w160/${country.code.toLowerCase()}.png) no-repeat center center`,
+                            backgroundSize: 'contain',
+                            backgroundColor: '#f0f0f0'
+                        }}
+                    />
+                </div>
+                <div className="text-content">
+                    <h1 className="text-white text-3xl font-bold tracking-wider bg-black bg-opacity-50 px-4 py-2 rounded text-center">
+                        {country.name}
+                    </h1>
+                </div>
+            </div>
 
-        <style jsx>{`
+            <style jsx>{`
           .flag-container {
             transform-style: preserve-3d;
             perspective: 1000px;
@@ -55,7 +58,7 @@ const AnimatedCountryHeader = ({ country }) => {
             box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
           }
         `}</style>
-      </div>
+        </div>
     );
 };
 
@@ -65,9 +68,12 @@ const InteractiveGlobe = () => {
     const controlsRef = useRef(null);
     const earthRef = useRef(null);
     const markersRef = useRef([]);
-    const [rotationSpeed, setRotationSpeed] = useState(0.0001); // Agregar el estado de velocidad de rotación
+    const [rotationSpeed, setRotationSpeed] = useState(0.0001); // 
     const [isPlaying, setIsPlaying] = useState(true); // Estado para manejar la pausa y reproducción
     const [showGlobal, setShowGlobal] = useState(false);
+    const [showSimulation, setShowSimulation] = useState(false); // 
+    const [showPredictions, setShowPredictions] = useState(false);
+    const [showGlobalPredictions, setShowGlobalPredictions] = useState(false);
 
     useEffect(() => {
         // Basic setup
@@ -288,14 +294,14 @@ const InteractiveGlobe = () => {
 
         const focusOnCountry = (country, camera, controls) => {
             controls.autoRotate = false;
-        
+
             // Calcular el punto de interés (el país seleccionado)
             const targetLookAt = latLngToVector3(country.lat, country.lng, 5);
-        
+
             // Calcular una posición más cercana al país para el zoom
             const zoomDistance = 4; // Cambié el zoom para acercarse más
             const targetPosition = latLngToVector3(country.lat, country.lng, zoomDistance);
-        
+
             // Animación de la cámara
             new TWEEN.Tween(camera.position)
                 .to(
@@ -316,7 +322,7 @@ const InteractiveGlobe = () => {
                     // Después del zoom, mostrar la información del país
                     setSelectedCountry(country);
                 });
-        
+
             // Actualizar la apariencia de los marcadores
             markersRef.current.forEach((marker) => {
                 const isSelected = marker.userData.countryData.code === country.code;
@@ -409,21 +415,20 @@ const InteractiveGlobe = () => {
         setIsPlaying((prevIsPlaying) => !prevIsPlaying);
     };
 
-
     return (
         <div className="relative w-full h-screen">
             <div ref={mountRef} className="w-full h-screen bg-black" style={{ cursor: 'grab' }} />
-            
+
             <NeonTitle />
-            
+
             {selectedCountry && <AnimatedCountryHeader country={selectedCountry} />}
-            
+
             <Controls onPause={handlePause} isPlaying={isPlaying} />
-            
+
             <TeamInfoBox />
 
-            {/* Botón Global Stats */}
-            <div className="fixed bottom-8 left-8 z-50">
+            {/* Botones actualizados */}
+            <div className="fixed bottom-8 left-8 z-50 flex gap-4">
                 <button
                     onClick={() => setShowGlobal(!showGlobal)}
                     className="flex items-center gap-2 px-4 py-2 bg-black/70 text-white rounded-lg border border-gray-700 hover:bg-black/90 transition-all duration-300 backdrop-blur-md"
@@ -431,15 +436,54 @@ const InteractiveGlobe = () => {
                     <Globe size={20} />
                     Global Stats
                 </button>
+
+                <button
+                    onClick={() => setShowSimulation(!showSimulation)}
+                    className="flex items-center gap-2 px-4 py-2 bg-black/70 text-white rounded-lg border border-gray-700 hover:bg-black/90 transition-all duration-300 backdrop-blur-md"
+                >
+                    <Activity size={20} />
+                    Simulador
+                </button>
+
+                <button
+                    onClick={() => setShowPredictions(!showPredictions)}
+                    className="flex items-center gap-2 px-4 py-2 bg-black/70 text-white rounded-lg border border-gray-700 hover:bg-black/90 transition-all duration-300 backdrop-blur-md"
+                >
+                    <ChartBar size={20} />
+                    Predicciones
+                </button>
+
+                <button
+                    onClick={() => setShowGlobalPredictions(!showGlobalPredictions)}
+                    className="flex items-center gap-2 px-4 py-2 bg-black/70 text-white rounded-lg border border-gray-700 hover:bg-black/90 transition-all duration-300 backdrop-blur-md"
+                >
+                    <Globe size={20} />
+                    Predicciones Globales
+                </button>
             </div>
 
-            {/* Global Dashboard */}
-            <GlobalDashboard 
-                isVisible={showGlobal} 
-                onClose={() => setShowGlobal(false)} 
+            {/* Dashboards */}
+            <GlobalDashboard
+                isVisible={showGlobal}
+                onClose={() => setShowGlobal(false)}
             />
 
-            {selectedCountry && <CountryDashboard 
+            <SimulationDashboard
+                isVisible={showSimulation}
+                onClose={() => setShowSimulation(false)}
+            />
+
+            <PredictionsDashboard
+                isVisible={showPredictions}
+                onClose={() => setShowPredictions(false)}
+            />
+
+            <GlobalPredictionsWindow
+                isVisible={showGlobalPredictions}
+                onClose={() => setShowGlobalPredictions(false)}
+            />
+
+            {selectedCountry && <CountryDashboard
                 country={selectedCountry}
                 controlsRef={controlsRef}
                 onClose={() => {
@@ -447,11 +491,17 @@ const InteractiveGlobe = () => {
                     if (controlsRef.current) {
                         controlsRef.current.autoRotate = true;
                     }
-                }} 
+                }}
             />}
         </div>
     );
+
+
+
+
+
+
 };
-  
-  
+
+
 export default InteractiveGlobe;
