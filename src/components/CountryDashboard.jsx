@@ -30,7 +30,6 @@ const CountryDashboard = ({ country, onClose, controlsRef }) => {
         { id: 'resumen', label: 'Resumen', icon: Layout },
         { id: 'empresas', label: 'Empresas', icon: Building2 },
         { id: 'produccion', label: 'Producción', icon: Factory },
-        { id: 'estadisticas', label: 'Estadísticas', icon: BarChart3 }
     ];
 
     useEffect(() => {
