@@ -1,49 +1,72 @@
-import React from 'react';
-import './TeamInfoBox.css';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Users, X, Plus } from 'lucide-react';
 
 const TeamInfoBox = () => {
+  const [isVisible, setIsVisible] = useState(true);
+  
+  const teamMembers = [
+    "Luis Angel Cordova Gil",
+    "Jose Lopez Mercado",
+    "Raul Romo Alonso"
+  ];
+
   return (
     <>
-      <div className="team-info-box fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50 max-w-sm w-full md:w-auto bg-black/90 backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-2xl border border-zinc-800">
-        <h2 className="font-['Exo'] text-2xl md:text-3xl font-thin tracking-widest text-white text-center md:text-left mb-6">
-          Equipo 25-1-0015
-        </h2>
-        <ul className="mt-4 space-y-4 md:space-y-3 font-['Exo'] text-zinc-400 tracking-wider text-center md:text-left text-sm md:text-base">
-          <li className="p-2 hover:bg-zinc-800/50 rounded-lg transition-colors">
-            Luis Angel Cordova Gil
-          </li>
-          <li className="p-2 hover:bg-zinc-800/50 rounded-lg transition-colors">
-            Jose Lopez Mercado
-          </li>
-          <li className="p-2 hover:bg-zinc-800/50 rounded-lg transition-colors">
-            Raul Romo Alonso
-          </li>
-        </ul>
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="team-info-box fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50 max-w-sm w-full md:w-auto bg-gradient-to-br from-zinc-900/95 to-black/95 backdrop-blur-md rounded-2xl p-6 shadow-2xl border border-zinc-800/50"
+          >
+            <div className="absolute -top-3 -left-3 w-16 h-16 bg-blue-500 rounded-2xl -z-10 blur-2xl opacity-20" />
+            <div className="absolute -bottom-3 -right-3 w-16 h-16 bg-purple-500 rounded-2xl -z-10 blur-2xl opacity-20" />
+            
+            <div className="flex items-center gap-3 mb-6">
+              <Users className="w-6 h-6 text-blue-400" />
+              <h2 className="font-['Exo'] text-2xl md:text-3xl font-thin tracking-widest text-white">
+                Equipo 25-1-0015
+              </h2>
+            </div>
 
-        {/* Botón para cerrar en móvil */}
-        <button 
-          className="md:hidden mt-4 w-full py-2 px-4 border border-zinc-700 rounded-lg text-zinc-400 hover:bg-zinc-800/50 transition-colors"
-          onClick={() => {
-            const box = document.querySelector('.team-info-box');
-            box.classList.add('hidden');
-          }}
+            <ul className="mt-4 space-y-2">
+              {teamMembers.map((member, index) => (
+                <motion.li
+                  key={member}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="p-3 hover:bg-white/5 rounded-xl transition-all duration-300 font-['Exo'] text-zinc-300 tracking-wider cursor-pointer group relative overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
+                  <span className="relative">{member}</span>
+                </motion.li>
+              ))}
+            </ul>
+
+            <button
+              className="md:hidden mt-6 w-full py-3 px-4 bg-white/5 hover:bg-white/10 border border-zinc-700/50 rounded-xl text-zinc-300 transition-all duration-300 flex items-center justify-center gap-2"
+              onClick={() => setIsVisible(false)}
+            >
+              <X className="w-4 h-4" />
+              Cerrar
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {!isVisible && (
+        <motion.button
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          className="fixed bottom-4 right-4 md:hidden bg-gradient-to-br from-blue-500 to-purple-500 p-4 rounded-2xl border border-white/10 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+          onClick={() => setIsVisible(true)}
         >
-          Cerrar
-        </button>
-      </div>
-
-      {/* Botón para mostrar en móvil */}
-      <button 
-        className="fixed bottom-4 right-4 md:hidden bg-black/90 p-3 rounded-full border border-zinc-800 shadow-lg team-info-show-btn"
-        onClick={() => {
-          const box = document.querySelector('.team-info-box');
-          box.classList.remove('hidden');
-        }}
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-        </svg>
-      </button>
+          <Plus className="w-6 h-6 text-white" />
+        </motion.button>
+      )}
     </>
   );
 };

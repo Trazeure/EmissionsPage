@@ -418,15 +418,15 @@ const InteractiveGlobe = () => {
     return (
         <div className="relative w-full h-screen">
             <div ref={mountRef} className="w-full h-screen bg-black" style={{ cursor: 'grab' }} />
-
+    
             <NeonTitle />
-
+    
             {selectedCountry && <AnimatedCountryHeader country={selectedCountry} />}
-
+    
             <Controls onPause={handlePause} isPlaying={isPlaying} />
-
+    
             <TeamInfoBox />
-
+    
             {/* Botones actualizados */}
             <div className="fixed bottom-8 left-8 z-50 flex gap-4">
                 <button
@@ -436,7 +436,7 @@ const InteractiveGlobe = () => {
                     <Globe size={20} />
                     Global Stats
                 </button>
-
+    
                 <button
                     onClick={() => setShowSimulation(!showSimulation)}
                     className="flex items-center gap-2 px-4 py-2 bg-black/70 text-white rounded-lg border border-gray-700 hover:bg-black/90 transition-all duration-300 backdrop-blur-md"
@@ -444,7 +444,7 @@ const InteractiveGlobe = () => {
                     <Activity size={20} />
                     Simulador
                 </button>
-
+    
                 <button
                     onClick={() => setShowPredictions(!showPredictions)}
                     className="flex items-center gap-2 px-4 py-2 bg-black/70 text-white rounded-lg border border-gray-700 hover:bg-black/90 transition-all duration-300 backdrop-blur-md"
@@ -452,7 +452,7 @@ const InteractiveGlobe = () => {
                     <ChartBar size={20} />
                     Predicciones
                 </button>
-
+    
                 <button
                     onClick={() => setShowGlobalPredictions(!showGlobalPredictions)}
                     className="flex items-center gap-2 px-4 py-2 bg-black/70 text-white rounded-lg border border-gray-700 hover:bg-black/90 transition-all duration-300 backdrop-blur-md"
@@ -461,28 +461,28 @@ const InteractiveGlobe = () => {
                     Predicciones Globales
                 </button>
             </div>
-
+    
             {/* Dashboards */}
             <GlobalDashboard
                 isVisible={showGlobal}
                 onClose={() => setShowGlobal(false)}
             />
-
+    
             <SimulationDashboard
                 isVisible={showSimulation}
                 onClose={() => setShowSimulation(false)}
             />
-
+    
             <PredictionsDashboard
                 isVisible={showPredictions}
                 onClose={() => setShowPredictions(false)}
             />
-
-            <GlobalPredictionsWindow
+    
+            <GlobalPredictionsWindow 
                 isVisible={showGlobalPredictions}
                 onClose={() => setShowGlobalPredictions(false)}
             />
-
+    
             {selectedCountry && <CountryDashboard
                 country={selectedCountry}
                 controlsRef={controlsRef}
@@ -496,7 +496,7 @@ const InteractiveGlobe = () => {
         </div>
     );
 
-
+ 
 
 
 
