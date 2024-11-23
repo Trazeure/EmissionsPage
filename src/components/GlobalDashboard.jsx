@@ -55,27 +55,27 @@ const GlobalDashboard = ({ isVisible, onClose }) => {
       name: 'Empresas Privadas',
       color: '#FF6B6B',
       hoverIcon: '💰',
-      percentage: 28.3,
-      companies: 4,
-      emissions: '196.5K'
+      percentage: 61.5,
+      companies: 75,
+      emissions: '440.2K'
     },
     'State-owned Entity': {
       icon: '🏛️',
       name: 'Empresas Estatales',
       color: '#4ECDC4',
       hoverIcon: '🏢',
-      percentage: 27.7,
-      companies: 4,
-      emissions: '192.0K'
+      percentage: 36,
+      companies: 29.5,
+      emissions: '464.6K'
     },
     'Nation State': {
       icon: '🏴',
       name: 'Estados Nacionales',
       color: '#45B7D1',
       hoverIcon: '🌐',
-      percentage: 44.0,
-      companies: 2,
-      emissions: '305.2K'
+      percentage: 9.02,
+      companies: 11,
+      emissions: '516.2K'
     }
   };
 
