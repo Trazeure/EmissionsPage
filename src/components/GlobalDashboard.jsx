@@ -64,8 +64,8 @@ const GlobalDashboard = ({ isVisible, onClose }) => {
       name: 'Empresas Estatales',
       color: '#4ECDC4',
       hoverIcon: '🏢',
-      percentage: 36,
-      companies: 29.5,
+      percentage: 29.5,
+      companies: 36,
       emissions: '464.6K'
     },
     'Nation State': {
@@ -280,7 +280,7 @@ const GlobalDashboard = ({ isVisible, onClose }) => {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
                       <p className="text-sm text-gray-400">Total</p>
-                      <p className="text-2xl font-bold text-white">10</p>
+                      <p className="text-2xl font-bold text-white">120</p>
                       <p className="text-sm text-gray-400">Empresas</p>
                     </div>
                   </div>
