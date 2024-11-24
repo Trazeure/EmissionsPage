@@ -8,15 +8,16 @@ import NeonTitle from './NeonTitle';
 import TeamInfoBox from './TeamInfoBox';
 import CountryDashboard from './CountryDashboard';
 import GlobalDashboard from "./GlobalDashboard";
-import { Activity, Globe, BarChart } from 'lucide-react';
+import { Activity, Globe, BarChart, Star, BookOpen, TreePine } from 'lucide-react'; // Añadido Star aquí
 import SimulationDashboard from './SimulationDashboard';
 import PredictionsDashboard from './PredictionsDashboard';
 import GlobalPredictionsWindow from './GlobalPredictionsWindow';
 import EducationalDashboard from './EducationalDashboard';
-import { BookOpen } from 'lucide-react';
-import { TreePine } from 'lucide-react';
 import CarbonDictionary from './CarbonDictionary';
 import WelcomeAnimation from './WelcomeAnimation';
+import RatingButton from './RatingButton';
+import RatingModal from './RatingModal';
+import RatingsDashboard from './RatingDashboard';
 
 
 const AnimatedCountryHeader = ({ country }) => {
@@ -82,6 +83,9 @@ const InteractiveGlobe = () => {
     const [showEducational, setShowEducational] = useState(false);
     const [showDictionary, setShowDictionary] = useState(false);
     const [showWelcome, setShowWelcome] = useState(true);
+    const [showRatingsDashboard, setShowRatingsDashboard] = useState(false);
+    const [isRatingModalOpen, setIsRatingModalOpen] = useState(false);
+
 
 
     useEffect(() => {
@@ -485,7 +489,24 @@ const InteractiveGlobe = () => {
                     <TreePine size={20} className="text-green-500" />
                     Guía del Proyecto
                 </button>
+
+                <button
+                    onClick={() => setIsRatingModalOpen(true)}
+                    className="flex items-center gap-2 px-4 py-2 bg-black/70 text-white rounded-lg border border-yellow-700 hover:bg-black/90 transition-all duration-300 backdrop-blur-md"
+                >
+                    <Star size={20} className="text-yellow-500" />
+                    Valorar Experiencia
+                </button>
+
+                <button
+                    onClick={() => setShowRatingsDashboard(!showRatingsDashboard)}
+                    className="flex items-center gap-2 px-4 py-2 bg-black/70 text-white rounded-lg border border-yellow-700 hover:bg-black/90 transition-all duration-300 backdrop-blur-md"
+                >
+                    <Star size={20} className="text-yellow-500" />
+                    Valoraciones
+                </button>
             </div>
+
 
             {/* Dashboards */}
             <GlobalDashboard
@@ -518,10 +539,21 @@ const InteractiveGlobe = () => {
                 isVisible={showGlobalPredictions}
                 onClose={() => setShowGlobalPredictions(false)}
             />
+            
+            <RatingModal
+                isOpen={isRatingModalOpen}
+                onClose={() => setIsRatingModalOpen(false)}
+            />
+
+            <RatingsDashboard
+                isVisible={showRatingsDashboard}
+                onClose={() => setShowRatingsDashboard(false)}
+            />
 
             {showWelcome && (
                 <WelcomeAnimation onComplete={() => setShowWelcome(false)} />
             )}
+
 
             {selectedCountry && <CountryDashboard
                 country={selectedCountry}
