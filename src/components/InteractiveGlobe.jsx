@@ -8,10 +8,15 @@ import NeonTitle from './NeonTitle';
 import TeamInfoBox from './TeamInfoBox';
 import CountryDashboard from './CountryDashboard';
 import GlobalDashboard from "./GlobalDashboard";
-import { Activity, Globe, ChartBar } from 'lucide-react';
+import { Activity, Globe, BarChart } from 'lucide-react';
 import SimulationDashboard from './SimulationDashboard';
 import PredictionsDashboard from './PredictionsDashboard';
 import GlobalPredictionsWindow from './GlobalPredictionsWindow';
+import EducationalDashboard from './EducationalDashboard';
+import { BookOpen } from 'lucide-react';
+import { TreePine } from 'lucide-react';
+import CarbonDictionary from './CarbonDictionary';
+import WelcomeAnimation from './WelcomeAnimation';
 
 
 const AnimatedCountryHeader = ({ country }) => {
@@ -74,6 +79,10 @@ const InteractiveGlobe = () => {
     const [showSimulation, setShowSimulation] = useState(false); // 
     const [showPredictions, setShowPredictions] = useState(false);
     const [showGlobalPredictions, setShowGlobalPredictions] = useState(false);
+    const [showEducational, setShowEducational] = useState(false);
+    const [showDictionary, setShowDictionary] = useState(false);
+    const [showWelcome, setShowWelcome] = useState(true);
+
 
     useEffect(() => {
         // Basic setup
@@ -418,15 +427,15 @@ const InteractiveGlobe = () => {
     return (
         <div className="relative w-full h-screen">
             <div ref={mountRef} className="w-full h-screen bg-black" style={{ cursor: 'grab' }} />
-    
+
             <NeonTitle />
-    
+
             {selectedCountry && <AnimatedCountryHeader country={selectedCountry} />}
-    
+
             <Controls onPause={handlePause} isPlaying={isPlaying} />
-    
+
             <TeamInfoBox />
-    
+
             {/* Botones actualizados */}
             <div className="fixed bottom-8 left-8 z-50 flex gap-4">
                 <button
@@ -436,7 +445,7 @@ const InteractiveGlobe = () => {
                     <Globe size={20} />
                     Global Stats
                 </button>
-    
+
                 <button
                     onClick={() => setShowSimulation(!showSimulation)}
                     className="flex items-center gap-2 px-4 py-2 bg-black/70 text-white rounded-lg border border-gray-700 hover:bg-black/90 transition-all duration-300 backdrop-blur-md"
@@ -444,15 +453,15 @@ const InteractiveGlobe = () => {
                     <Activity size={20} />
                     Simulador
                 </button>
-    
+
                 <button
                     onClick={() => setShowPredictions(!showPredictions)}
                     className="flex items-center gap-2 px-4 py-2 bg-black/70 text-white rounded-lg border border-gray-700 hover:bg-black/90 transition-all duration-300 backdrop-blur-md"
                 >
-                    <ChartBar size={20} />
+                    <BarChart size={20} />
                     Predicciones
                 </button>
-    
+
                 <button
                     onClick={() => setShowGlobalPredictions(!showGlobalPredictions)}
                     className="flex items-center gap-2 px-4 py-2 bg-black/70 text-white rounded-lg border border-gray-700 hover:bg-black/90 transition-all duration-300 backdrop-blur-md"
@@ -460,29 +469,60 @@ const InteractiveGlobe = () => {
                     <Globe size={20} />
                     Predicciones Globales
                 </button>
+
+                <button
+                    onClick={() => setShowDictionary(true)}
+                    className="flex items-center gap-2 px-4 py-2 bg-slate-800 text-white rounded-lg"
+                >
+                    <BookOpen size={20} />
+                    Fuente de datos
+                </button>
+
+                <button
+                    onClick={() => setShowEducational(!showEducational)}
+                    className="flex items-center gap-2 px-4 py-2 bg-black/70 text-white rounded-lg border border-green-700 hover:bg-black/90 transition-all duration-300 backdrop-blur-md"
+                >
+                    <TreePine size={20} className="text-green-500" />
+                    Guía del Proyecto
+                </button>
             </div>
-    
+
             {/* Dashboards */}
             <GlobalDashboard
                 isVisible={showGlobal}
                 onClose={() => setShowGlobal(false)}
             />
-    
+
+            <EducationalDashboard
+                isVisible={showEducational}
+                onClose={() => setShowEducational(false)}
+            />
+
+            <CarbonDictionary
+                isVisible={showDictionary}
+                onClose={() => setShowDictionary(false)}
+            />
+
+
             <SimulationDashboard
                 isVisible={showSimulation}
                 onClose={() => setShowSimulation(false)}
             />
-    
+
             <PredictionsDashboard
                 isVisible={showPredictions}
                 onClose={() => setShowPredictions(false)}
             />
-    
-            <GlobalPredictionsWindow 
+
+            <GlobalPredictionsWindow
                 isVisible={showGlobalPredictions}
                 onClose={() => setShowGlobalPredictions(false)}
             />
-    
+
+            {showWelcome && (
+                <WelcomeAnimation onComplete={() => setShowWelcome(false)} />
+            )}
+
             {selectedCountry && <CountryDashboard
                 country={selectedCountry}
                 controlsRef={controlsRef}
@@ -496,7 +536,7 @@ const InteractiveGlobe = () => {
         </div>
     );
 
- 
+
 
 
 

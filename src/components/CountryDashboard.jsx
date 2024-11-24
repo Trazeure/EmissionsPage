@@ -5,7 +5,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { 
     AlertCircle, X, RotateCcw, Info, TrendingUp, Building2, Layout, Factory,
     ChevronRight, ArrowUpRight, Globe, Sparkles, Activity, BarChart3, 
-    PieChart, Map, Wind, Gauge, BarChart, TabletSmartphone // Cambiado FileBar por BarChart
+    PieChart, Map, Wind, Gauge, Tablet // Eliminado BarChart3 duplicado
 } from 'lucide-react';
 
 const CountryDashboard = ({ country, onClose, controlsRef }) => {
@@ -321,7 +321,7 @@ const CountryDashboard = ({ country, onClose, controlsRef }) => {
                                             animate={{ x: 0, opacity: 1 }}
                                             transition={{ delay: 0.1 }}
                                         >
-                                            <TabletSmartphone size={14} />
+                                            <Tablet size={14} />
                                             Panel de Control de Emisiones CO₂
                                         </motion.p>
                                     </div>
