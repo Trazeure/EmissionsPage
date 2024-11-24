@@ -5,7 +5,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { 
     AlertCircle, X, RotateCcw, Info, TrendingUp, Building2, Layout, Factory,
     ChevronRight, ArrowUpRight, Globe, Sparkles, Activity, BarChart3, 
-    PieChart, Map, Wind, Gauge, Tablet // Eliminado BarChart3 duplicado
+    PieChart, Map, Wind, Gauge, Tablet
 } from 'lucide-react';
 
 const CountryDashboard = ({ country, onClose, controlsRef }) => {
@@ -215,7 +215,7 @@ const CountryDashboard = ({ country, onClose, controlsRef }) => {
                 </div>
                 <div className="flex items-center gap-2">
                     <Wind className="h-5 w-5 text-gray-400" />
-                    <BarChart className="h-5 w-5 text-gray-400" /> {/* Cambiado aquí */}
+                    <BarChart3 className="h-5 w-5 text-gray-400" /> {/* Cambiado aquí */}
                 </div>
             </div>
 
