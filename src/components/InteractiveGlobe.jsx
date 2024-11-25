@@ -187,7 +187,7 @@ const InteractiveGlobe = () => {
         const textureQuality = isMobile ? '2k' : '8k';
         const dayTexture = textureLoader.load(`textures/${textureQuality}_earth_daymap.jpg`);
         const nightTexture = textureLoader.load(`textures/${textureQuality}_earth_nightmap.jpg`);
-        const normalTexture = textureLoader.load(`textures/${textureQuality}_earth_normal_map.tif`);
+        const normalTexture = textureLoader.load(`textures/${textureQuality}_earth_normal_map.jpg`);
         const cloudsTexture = textureLoader.load(`textures/${textureQuality}_earth_clouds.jpg`);
 
         dayTexture.colorSpace = THREE.SRGBColorSpace;
