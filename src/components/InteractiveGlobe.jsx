@@ -86,7 +86,9 @@ const InteractiveGlobe = () => {
     const [showWelcome, setShowWelcome] = useState(true);
     const [showRatingsDashboard, setShowRatingsDashboard] = useState(false);
     const [isRatingModalOpen, setIsRatingModalOpen] = useState(false);
-
+    const touchStartRef = useRef({ x: 0, y: 0 });
+    const isTouchingRef = useRef(false);
+    const touchTimeoutRef = useRef(null);
     // Media queries para responsive
     const isMobile = useMediaQuery({ maxWidth: 768 });
     const isTablet = useMediaQuery({ minWidth: 769, maxWidth: 1024 });
@@ -124,6 +126,7 @@ const InteractiveGlobe = () => {
             starSize: 0.1
         };
     }, [isMobile, isTablet]);
+
     useEffect(() => {
         const dimensions = getResponsiveDimensions();
 
@@ -235,7 +238,6 @@ const InteractiveGlobe = () => {
                 }
             `
         });
-
         // Create Earth con geometría adaptativa
         const earthGeometry = new THREE.SphereGeometry(
             dimensions.earthRadius,
@@ -326,12 +328,13 @@ const InteractiveGlobe = () => {
 
         // Camera setup con posición adaptativa
         camera.position.z = dimensions.cameraDistance;
+
         // Controls setup adaptativo
         const controls = new OrbitControls(camera, renderer.domElement);
         controlsRef.current = controls;
         controls.enableDamping = true;
         controls.dampingFactor = isMobile ? 0.07 : 0.05;
-        controls.rotateSpeed = isMobile ? 0.7 : 0.5;
+        controls.rotateSpeed = isMobile ? 0.5 : 0.3;
         controls.enableZoom = true;
         controls.minDistance = dimensions.minDistance;
         controls.maxDistance = dimensions.maxDistance;
@@ -339,30 +342,94 @@ const InteractiveGlobe = () => {
         controls.autoRotateSpeed = isMobile ? 0.3 : 0.5;
         controls.enablePan = false;
 
+        // Prevenir rotación extrema
+        controls.minPolarAngle = Math.PI * 0.2;
+        controls.maxPolarAngle = Math.PI * 0.8;
+
         // Configuración táctil optimizada
         controls.touches = {
             ONE: THREE.TOUCH.ROTATE,
-            TWO: THREE.TOUCH.DOLLY_PAN
+            TWO: THREE.TOUCH.DOLLY_ROTATE
         };
 
         // Raycaster para selección
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
 
-        // Manejo de clics optimizado para móvil y desktop
+        // Optimized touch handling
+        const handleTouchStart = (event) => {
+            event.preventDefault();
+            isTouchingRef.current = true;
+            
+            const touch = event.touches[0];
+            touchStartRef.current = {
+                x: touch.clientX,
+                y: touch.clientY,
+                time: Date.now()
+            };
+
+            if (touchTimeoutRef.current) {
+                clearTimeout(touchTimeoutRef.current);
+            }
+        };
+
+        const handleTouchMove = (event) => {
+            if (!isTouchingRef.current) return;
+            event.preventDefault();
+            
+            if (controlsRef.current) {
+                controlsRef.current.autoRotate = false;
+            }
+        };
+
+        const handleTouchEnd = (event) => {
+            event.preventDefault();
+            const touchEnd = event.changedTouches[0];
+            const touchStartTime = touchStartRef.current.time;
+            const touchEndTime = Date.now();
+            const touchDuration = touchEndTime - touchStartTime;
+
+            const distX = Math.abs(touchEnd.clientX - touchStartRef.current.x);
+            const distY = Math.abs(touchEnd.clientY - touchStartRef.current.y);
+            const totalDist = Math.sqrt(distX * distX + distY * distY);
+
+            if (touchDuration < 200 && totalDist < 10) {
+                const x = touchEnd.clientX;
+                const y = touchEnd.clientY;
+
+                mouse.x = (x / window.innerWidth) * 2 - 1;
+                mouse.y = -(y / window.innerHeight) * 2 + 1;
+
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(markersRef.current, true);
+
+                if (intersects.length > 0) {
+                    const country = intersects[0].object.userData.countryData;
+                    if (country) {
+                        setSelectedCountry(country);
+                        focusOnCountry(country, camera, controls);
+                    }
+                }
+            }
+
+            touchTimeoutRef.current = setTimeout(() => {
+                if (controlsRef.current && isPlaying) {
+                    controlsRef.current.autoRotate = true;
+                }
+            }, 1500);
+
+            isTouchingRef.current = false;
+        };
+
         const handleInteraction = (event) => {
             event.preventDefault();
-
-            // Normalizar coordenadas para touch y mouse
-            const x = event.touches ? event.touches[0].clientX : event.clientX;
-            const y = event.touches ? event.touches[0].clientY : event.clientY;
+            const x = event.clientX;
+            const y = event.clientY;
 
             mouse.x = (x / window.innerWidth) * 2 - 1;
             mouse.y = -(y / window.innerHeight) * 2 + 1;
 
             raycaster.setFromCamera(mouse, camera);
-
-            // Optimizar intersección solo con marcadores
             const intersects = raycaster.intersectObjects(markersRef.current, true);
 
             if (intersects.length > 0) {
@@ -373,7 +440,6 @@ const InteractiveGlobe = () => {
                 }
             }
         };
-
         // Animación optimizada para el enfoque en países
         const focusOnCountry = (country, camera, controls) => {
             controls.autoRotate = false;
@@ -382,7 +448,6 @@ const InteractiveGlobe = () => {
             const zoomDistance = isMobile ? dimensions.earthRadius + 2 : dimensions.earthRadius + 4;
             const targetPosition = latLngToVector3(country.lat, country.lng, zoomDistance);
 
-            // Animación suave con TWEEN
             new TWEEN.Tween(camera.position)
                 .to(
                     {
@@ -397,18 +462,42 @@ const InteractiveGlobe = () => {
                     camera.lookAt(targetLookAt);
                     controls.target.copy(targetLookAt);
                 })
-                .start()
-                .onComplete(() => {
-                    setSelectedCountry(country);
-                });
+                .start();
 
-            // Actualizar apariencia de marcadores
             markersRef.current.forEach((marker) => {
                 const isSelected = marker.userData.countryData.code === country.code;
                 marker.material.color.setHex(isSelected ? 0xff0000 : 0x00ff00);
                 marker.material.opacity = isSelected ? 1 : 0.6;
             });
         };
+
+        // Manejo optimizado de cambios de tamaño y orientación
+        const handleResize = () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+
+            const newDimensions = getResponsiveDimensions();
+            camera.position.z = newDimensions.cameraDistance;
+            controls.minDistance = newDimensions.minDistance;
+            controls.maxDistance = newDimensions.maxDistance;
+        };
+
+        // Event listeners optimizados
+        if (isMobile) {
+            renderer.domElement.addEventListener('touchstart', handleTouchStart, { passive: false });
+            renderer.domElement.addEventListener('touchmove', handleTouchMove, { passive: false });
+            renderer.domElement.addEventListener('touchend', handleTouchEnd, { passive: false });
+            renderer.domElement.style.touchAction = 'none';
+        } else {
+            window.addEventListener('click', handleInteraction);
+        }
+
+        window.addEventListener('resize', handleResize, { passive: true });
+        window.addEventListener('orientationchange', handleResize);
 
         // Loop de animación optimizado
         let time = 0;
@@ -417,11 +506,9 @@ const InteractiveGlobe = () => {
         const animate = () => {
             frameId = requestAnimationFrame(animate);
 
-            // Incremento de tiempo adaptativo
             time += isMobile ? 0.0008 : 0.001;
 
-            // Animación de estrellas optimizada
-            if (!isMobile || time % 2 === 0) { // Reducir actualizaciones en móvil
+            if (!isMobile || time % 2 === 0) {
                 const positions = stars.geometry.attributes.position;
                 const blinkOffsets = stars.geometry.attributes.blinkOffset;
                 for (let i = 0; i < positions.count; i++) {
@@ -430,17 +517,14 @@ const InteractiveGlobe = () => {
                 }
             }
 
-            // Rotación de estrellas adaptativa
             stars.rotation.y += isMobile ? 0.00005 : 0.0001;
             stars.rotation.x += isMobile ? 0.00005 : 0.0001;
 
-            // Actualizar dirección del sol
             const sunX = Math.cos(time);
             const sunZ = Math.sin(time);
             customMaterial.uniforms.sunDirection.value.set(sunX, 0, sunZ);
             sunLight.position.set(sunX * 5, 3, sunZ * 5);
 
-            // Rotación de elementos si está reproduciendo
             if (isPlaying) {
                 const currentRotationSpeed = isMobile ? rotationSpeed * 0.75 : rotationSpeed;
                 earth.rotation.y += currentRotationSpeed;
@@ -454,60 +538,27 @@ const InteractiveGlobe = () => {
             renderer.render(scene, camera);
         };
 
-        // Manejo optimizado de cambios de tamaño y orientación
-        const handleResize = () => {
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-            renderer.setSize(width, height);
-
-            // Actualizar dimensiones responsivas
-            const newDimensions = getResponsiveDimensions();
-            camera.position.z = newDimensions.cameraDistance;
-            controls.minDistance = newDimensions.minDistance;
-            controls.maxDistance = newDimensions.maxDistance;
-        };
-
-        // Manejo optimizado de controles de teclado
-        const handleKeyDown = (event) => {
-            const speedChange = isMobile ? 0.00005 : 0.0001;
-
-            switch (event.key) {
-                case 'ArrowRight':
-                    setRotationSpeed((prevSpeed) => prevSpeed + speedChange);
-                    break;
-                case 'ArrowLeft':
-                    setRotationSpeed((prevSpeed) => prevSpeed - speedChange);
-                    break;
-                case ' ':
-                    setIsPlaying((prevIsPlaying) => !prevIsPlaying);
-                    break;
-            }
-        };
-
-        // Event listeners optimizados
-        const eventType = isMobile ? 'touchstart' : 'click';
-        window.addEventListener(eventType, handleInteraction, { passive: false });
-        window.addEventListener('resize', handleResize, { passive: true });
-        window.addEventListener('keydown', handleKeyDown);
-        window.addEventListener('orientationchange', handleResize);
-
-        // Iniciar animación
         animate();
 
-        // Limpieza de recursos
         return () => {
             if (frameId) {
                 cancelAnimationFrame(frameId);
             }
-            window.removeEventListener(eventType, handleInteraction);
+
+            if (isMobile) {
+                renderer.domElement.removeEventListener('touchstart', handleTouchStart);
+                renderer.domElement.removeEventListener('touchmove', handleTouchMove);
+                renderer.domElement.removeEventListener('touchend', handleTouchEnd);
+                if (touchTimeoutRef.current) {
+                    clearTimeout(touchTimeoutRef.current);
+                }
+            } else {
+                window.removeEventListener('click', handleInteraction);
+            }
+            
             window.removeEventListener('resize', handleResize);
-            window.removeEventListener('keydown', handleKeyDown);
             window.removeEventListener('orientationchange', handleResize);
 
-            // Limpiar geometrías y materiales
             scene.traverse((object) => {
                 if (object instanceof THREE.Mesh) {
                     object.geometry.dispose();
@@ -516,14 +567,13 @@ const InteractiveGlobe = () => {
                 }
             });
 
-            // Limpiar renderer
             renderer.dispose();
             if (mountRef.current && mountRef.current.contains(renderer.domElement)) {
                 mountRef.current.removeChild(renderer.domElement);
             }
         };
     }, [isMobile, isTablet, isPlaying, rotationSpeed, getResponsiveDimensions]);
-    // Funciones de manejo de los controles
+
     const handleSpeedChange = (change) => {
         const speedChange = isMobile ? 0.00005 : 0.0001;
         setRotationSpeed((prevSpeed) => prevSpeed + (change * speedChange));
@@ -533,7 +583,6 @@ const InteractiveGlobe = () => {
         setIsPlaying((prevIsPlaying) => !prevIsPlaying);
     };
 
-    // Renderizado responsivo
     return (
         <div className="relative w-full h-screen overflow-hidden select-none">
             <div
@@ -563,8 +612,6 @@ const InteractiveGlobe = () => {
             />
 
             <TeamInfoBox isMobile={isMobile} />
-
-            {/* Panel de botones responsivo */}
             
             <MenuButton
                 isMobile={isMobile}
@@ -577,106 +624,74 @@ const InteractiveGlobe = () => {
                 setIsRatingModalOpen={setIsRatingModalOpen}
             />
 
-
-            {/* Dashboards responsivos */}
             <GlobalDashboard
                 isVisible={showGlobal}
                 onClose={() => setShowGlobal(false)}
                 isMobile={isMobile}
-                className={`
-                    fixed transition-all duration-300 ease-in-out
-                    ${isMobile
-                        ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl'
-                        : 'right-8 bottom-8 w-96 rounded-xl'
-                    }
-                `}
+                className={`fixed transition-all duration-300 ease-in-out ${
+                    isMobile ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
+                }`}
             />
 
             <SimulationDashboard
                 isVisible={showSimulation}
                 onClose={() => setShowSimulation(false)}
                 isMobile={isMobile}
-                className={`
-                    fixed transition-all duration-300 ease-in-out
-                    ${isMobile
-                        ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl'
-                        : 'right-8 bottom-8 w-96 rounded-xl'
-                    }
-                `}
+                className={`fixed transition-all duration-300 ease-in-out ${
+                    isMobile ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
+                }`}
             />
 
             <PredictionsDashboard
                 isVisible={showPredictions}
                 onClose={() => setShowPredictions(false)}
                 isMobile={isMobile}
-                className={`
-                    fixed transition-all duration-300 ease-in-out
-                    ${isMobile
-                        ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl'
-                        : 'right-8 bottom-8 w-96 rounded-xl'
-                    }
-                `}
+                className={`fixed transition-all duration-300 ease-in-out ${
+                    isMobile ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
+                }`}
             />
 
             <GlobalPredictionsWindow
                 isVisible={showGlobalPredictions}
                 onClose={() => setShowGlobalPredictions(false)}
                 isMobile={isMobile}
-                className={`
-                    fixed transition-all duration-300 ease-in-out
-                    ${isMobile
-                        ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl'
-                        : 'right-8 bottom-8 w-96 rounded-xl'
-                    }
-                `}
+                className={`fixed transition-all duration-300 ease-in-out ${
+                    isMobile ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
+                }`}
             />
 
             <EducationalDashboard
                 isVisible={showEducational}
                 onClose={() => setShowEducational(false)}
                 isMobile={isMobile}
-                className={`
-                    fixed transition-all duration-300 ease-in-out
-                    ${isMobile
-                        ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl'
-                        : 'right-8 bottom-8 w-96 rounded-xl'
-                    }
-                `}
+                className={`fixed transition-all duration-300 ease-in-out ${
+                    isMobile ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
+                }`}
             />
 
             <CarbonDictionary
                 isVisible={showDictionary}
                 onClose={() => setShowDictionary(false)}
                 isMobile={isMobile}
-                className={`
-                    fixed transition-all duration-300 ease-in-out
-                    ${isMobile
-                        ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl'
-                        : 'right-8 bottom-8 w-96 rounded-xl'
-                    }
-                `}
+                className={`fixed transition-all duration-300 ease-in-out ${
+                    isMobile ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
+                }`}
             />
 
             <RatingModal
                 isOpen={isRatingModalOpen}
                 onClose={() => setIsRatingModalOpen(false)}
                 isMobile={isMobile}
-                className={`
-                    ${isMobile ? 'w-[90vw] max-w-sm mx-auto' : 'w-96'}
-                `}
+                className={isMobile ? 'w-[90vw] max-w-sm mx-auto' : 'w-96'}
             />
 
             <RatingsDashboard
                 isVisible={showRatingsDashboard}
                 onClose={() => setShowRatingsDashboard(false)}
                 isMobile={isMobile}
-                className={`
-                    fixed transition-all duration-300 ease-in-out
-                    ${isMobile
-                        ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl'
-                        : 'right-8 bottom-8 w-96 rounded-xl'
-                    }
-                `}
+                className={`fixed transition-all duration-300 ease-in-out ${
+                    isMobile ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
+                }`}
             />
 
             {showWelcome && (
@@ -697,13 +712,9 @@ const InteractiveGlobe = () => {
                         }
                     }}
                     isMobile={isMobile}
-                    className={`
-                        fixed transition-all duration-300 ease-in-out
-                        ${isMobile
-                            ? 'inset-x-0 bottom-0 h-[70vh] rounded-t-2xl'
-                            : 'right-8 bottom-8 w-96 rounded-xl'
-                        }
-                    `}
+                    className={`fixed transition-all duration-300 ease-in-out ${
+                        isMobile ? 'inset-x-0 bottom-0 h-[70vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
+                    }`}
                 />
             )}
         </div>
@@ -711,3 +722,4 @@ const InteractiveGlobe = () => {
 };
 
 export default InteractiveGlobe;
+
