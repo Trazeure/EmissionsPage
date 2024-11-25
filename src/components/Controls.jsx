@@ -30,7 +30,7 @@ const Controls = ({ onPause, isPlaying }) => {
         className="w-auto"
       >
         <motion.div 
-          className="bg-gradient-to-t from-black/95 via-black/90 to-black/80 backdrop-blur-lg rounded-2xl p-3 shadow-lg border border-white/10 relative overflow-hidden min-w-[300px]"
+          className="bg-gradient-to-t from-black/95 via-black/90 to-black/80 backdrop-blur-lg rounded-2xl p-3 shadow-lg border border-white/10 relative overflow-hidden min-w-[240px]"
           whileHover={{ scale: 1.02 }}
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
         >
@@ -53,7 +53,7 @@ const Controls = ({ onPause, isPlaying }) => {
                 animate={{ rotate: isPlaying ? 0 : 360 }}
                 transition={{ duration: 0.5 }}
               >
-                {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+                {isPlaying ? <Pause size={15} /> : <Play size={15} />}
               </motion.div>
             </motion.button>
           </div>
@@ -81,7 +81,7 @@ const Controls = ({ onPause, isPlaying }) => {
                     whileHover={{ rotate: [0, -10, 10, 0] }}
                     transition={{ duration: 0.5 }}
                   >
-                    <instruction.icon size={14} className="text-white" />
+                    <instruction.icon size={10} className="text-white" />
                   </motion.div>
                   <span className="text-xs text-white/90 font-medium text-center">
                     {instruction.text}
