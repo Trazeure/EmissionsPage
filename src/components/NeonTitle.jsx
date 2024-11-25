@@ -1,50 +1,62 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import uniLogo from '/src/assets/logo-uni.png';
 
-const NeonTitle = ({ isMobile }) => {
+const ModernHeader = ({ isMobile }) => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className={`
-      fixed top-0 w-full z-50 
-      ${isMobile ? 'px-4 py-2' : 'px-8 py-4'}
-      bg-gradient-to-b from-black/80 to-transparent
-      backdrop-blur-sm
-    `}>
+    <header 
+      className={`
+        fixed top-0 w-full z-50
+        transition-all duration-500 ease-in-out
+        ${scrolled ? 'bg-white/10' : 'bg-transparent'}
+        backdrop-blur-md
+      `}
+    >
       <div className={`
         max-w-7xl mx-auto
-        flex ${isMobile ? 'flex-col' : 'flex-row'} 
+        ${isMobile ? 'px-4 py-2' : 'px-8 py-4'}
+        flex ${isMobile ? 'flex-col' : 'flex-row'}
         items-center gap-4
       `}>
-        {/* Contenedor de texto */}
         <div className={`
-          flex-grow text-center
-          flex flex-col gap-2
+          flex-grow
           ${isMobile ? 'order-2' : 'order-1'}
         `}>
           <h1 className={`
-            font-['Exo_2'] font-thin tracking-widest text-white
+            font-['Exo_2'] font-light
             ${isMobile ? 'text-lg' : 'text-2xl md:text-3xl'}
-            transition-all duration-300
-            relative
+            text-white
+            transition-all duration-500
+            animate-slide-up-fade
           `}>
-            <span className="relative">
-              <span className="absolute -inset-1 blur-sm bg-blue-500/20 rounded-lg" />
-              <span className="relative">EMISIONES DE CARBONO GLOBALES</span>
+            <span className="inline-block animate-fade-in opacity-0 [animation-delay:200ms]">
+              EMISIONES DE CARBONO GLOBALES
             </span>
+        
           </h1>
           
           <p className={`
-            font-['Exo_2'] tracking-wider text-zinc-400
-            ${isMobile ? 'text-xs px-4' : 'text-sm md:text-base'}
-            line-clamp-2 sm:line-clamp-none
+            mt-2 font-['Exo_2'] 
+            ${isMobile ? 'text-xs' : 'text-sm md:text-base'}
+            text-zinc-300/90
+            animate-fade-in opacity-0 [animation-delay:600ms]
           `}>
-            Modelado Predictivo de Emisiones de Carbono: 
+            Modelado Predictivo de Emisiones de Carbono:
             <span className="hidden sm:inline">
               {" "}Enfoque Comparativo entre Sectores Empresariales y Públicos
             </span>
           </p>
         </div>
 
-        {/* Logo */}
         <div className={`
           flex-shrink-0
           ${isMobile ? 'order-1 -mb-2' : 'order-2 ml-4'}
@@ -53,19 +65,25 @@ const NeonTitle = ({ isMobile }) => {
             src={uniLogo}
             alt="Logo Universidad"
             className={`
-              object-contain brightness-150
-              transition-all duration-300
+              object-contain
+              transition-all duration-500
               ${isMobile ? 'h-16' : 'h-20 md:h-24'}
-              hover:scale-105 hover:brightness-200
+              animate-fade-in opacity-0 [animation-delay:800ms]
+              hover:scale-102
             `}
           />
         </div>
       </div>
 
-      {/* Línea decorativa inferior */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
-    </div>
+      <div className="absolute bottom-0 left-0 right-0 h-px">
+        <div className="
+          h-full mx-auto
+          bg-gradient-radial from-white/20 to-transparent
+          animate-gradient
+        "/>
+      </div>
+    </header>
   );
 };
 
-export default NeonTitle;
+export default ModernHeader;

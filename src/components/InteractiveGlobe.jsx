@@ -622,6 +622,7 @@ const InteractiveGlobe = () => {
                 setShowDictionary={setShowDictionary}
                 setShowEducational={setShowEducational}
                 setIsRatingModalOpen={setIsRatingModalOpen}
+                setshowRatingsDashboard={setShowRatingsDashboard}
             />
 
             <GlobalDashboard
