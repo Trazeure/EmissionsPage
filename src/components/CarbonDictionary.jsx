@@ -1,5 +1,379 @@
 import React, { useState, useEffect } from 'react';
+import { 
+    BookOpen, 
+    Factory, 
+    Database, 
+    Cloud, 
+    Flame, 
+    Droplet,
+    Search,
+    X,
+    Info
+} from 'lucide-react';
 
+// Enhanced Card Component
+const DictionaryCard = ({ title, description, icon: Icon, className = "" }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+        <div 
+            className={`
+                relative overflow-hidden p-6 rounded-xl
+                bg-gradient-to-br from-gray-900/90 to-black
+                border border-gray-800/50 backdrop-blur-lg
+                transform transition-all duration-500 ease-in-out
+                hover:scale-102 hover:shadow-xl hover:shadow-blue-900/20
+                group
+                ${className}
+            `}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-4">
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-gray-800/80 to-gray-900/80 group-hover:from-blue-900/20 group-hover:to-purple-900/20 transition-all duration-500">
+                        <Icon className="w-6 h-6 text-blue-400 group-hover:text-blue-300 transition-colors duration-500" />
+                    </div>
+                    <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300 group-hover:from-blue-300 group-hover:to-purple-300 transition-all duration-500">
+                        {title}
+                    </h3>
+                </div>
+                <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-500">
+                    {description}
+                </p>
+            </div>
+            {isHovered && (
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-xl animate-pulse-slow" />
+            )}
+        </div>
+    );
+};
+
+// Enhanced Search Input Component
+const SearchInput = ({ value, onChange }) => (
+    <div className="relative group">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-purple-900/20 rounded-xl blur-sm opacity-75 group-hover:opacity-100 transition duration-300" />
+        <div className="relative flex items-center">
+            <input
+                type="text"
+                placeholder="Buscar términos..."
+                value={value}
+                onChange={onChange}
+                className="w-full px-12 py-4 bg-gradient-to-br from-gray-900 to-black rounded-xl 
+                          border border-gray-800/50 text-gray-300 placeholder-gray-500
+                          focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20
+                          transition-all duration-300"
+            />
+            <div className="absolute left-4 text-gray-500">
+                <Search className="w-5 h-5" />
+            </div>
+        </div>
+    </div>
+);
+
+// Navigation Button Component
+const NavButton = ({ active, onClick, icon: Icon, label, gradient }) => (
+    <button
+        onClick={onClick}
+        className={`
+            relative group flex items-center gap-3 px-6 py-3 rounded-xl
+            transition-all duration-500 ease-in-out whitespace-nowrap
+            ${active 
+                ? `bg-gradient-to-r ${gradient} scale-105 shadow-lg`
+                : 'bg-gradient-to-br from-gray-900 to-black hover:from-gray-800 hover:to-gray-900'
+            }
+        `}
+    >
+        <Icon className={`w-5 h-5 ${active ? 'text-white' : 'text-gray-400 group-hover:text-white'} transition-colors duration-300`} />
+        <span className={`font-medium ${active ? 'text-white' : 'text-gray-400 group-hover:text-white'} transition-colors duration-300`}>
+            {label}
+        </span>
+        {active && (
+            <div className="absolute inset-0 bg-white/10 rounded-xl animate-pulse-slow" />
+        )}
+    </button>
+);
+// Configuración de secciones mejorada
+const sections = {
+    general: {
+        icon: BookOpen,
+        title: "Conceptos Generales",
+        gradient: "from-emerald-600 to-green-800",
+        hoverGradient: "group-hover:from-emerald-800/60 group-hover:to-green-800/60",
+        bgGlow: "from-emerald-500/10 to-green-500/10",
+        textGradient: "from-emerald-400 to-green-300",
+        items: [
+            {
+                title: "Carbon Majors Database",
+                description: "Base de datos integral que monitorea y rastrea las emisiones globales de gases de efecto invernadero desde 1854, vinculándolas directamente con las empresas responsables de su producción.",
+                icon: Database,
+                color: "emerald"
+            },
+            {
+                title: "Gases de Efecto Invernadero",
+                description: "Conjunto de gases atmosféricos que retienen el calor y son los principales responsables del cambio climático. Incluyen dióxido de carbono (CO2), metano (CH4), óxido nitroso (N2O) y otros.",
+                icon: Cloud,
+                color: "emerald"
+            },
+            {
+                title: "MtCO2e",
+                description: "Medida estandarizada que representa Millones de toneladas de CO2 equivalente. Permite comparar el impacto de diferentes gases de efecto invernadero en una única escala.",
+                icon: Database,
+                color: "emerald"
+            }
+        ]
+    },
+    empresas: {
+        icon: Factory,
+        title: "Tipos de Empresas",
+        gradient: "from-blue-600 to-indigo-800",
+        hoverGradient: "group-hover:from-blue-800/60 group-hover:to-indigo-800/60",
+        bgGlow: "from-blue-500/10 to-indigo-500/10",
+        textGradient: "from-blue-400 to-indigo-300",
+        items: [
+            {
+                title: "Empresas Privadas",
+                description: "Corporaciones de propiedad privada que participan en la extracción, producción y distribución de combustibles fósiles. Su principal objetivo es maximizar el retorno para los accionistas.",
+                icon: Factory,
+                color: "blue"
+            },
+            {
+                title: "Empresas Estatales",
+                description: "Compañías donde el estado mantiene una participación mayoritaria (>50%). Estas entidades suelen tener objetivos tanto comerciales como de política pública nacional.",
+                icon: Factory,
+                color: "blue"
+            },
+            {
+                title: "Productores Nacionales",
+                description: "Entidades directamente controladas por gobiernos nacionales, especialmente comunes en el sector del carbón. Operan bajo directrices estatales específicas.",
+                icon: Factory,
+                color: "blue"
+            }
+        ]
+    },
+    datos: {
+        icon: Database,
+        title: "Fuentes de Datos",
+        gradient: "from-purple-600 to-pink-700",
+        hoverGradient: "group-hover:from-purple-800/60 group-hover:to-pink-800/60",
+        bgGlow: "from-purple-500/10 to-pink-500/10",
+        textGradient: "from-purple-400 to-pink-300",
+        items: [
+            {
+                title: "Datos Autorreportados",
+                description: "Información directamente proporcionada por las empresas a través de sus informes anuales, informes de sostenibilidad y documentación oficial corporativa.",
+                icon: Database,
+                color: "purple"
+            },
+            {
+                title: "Fuentes Externas",
+                description: "Datos obtenidos de agencias especializadas como la EIA, Oil & Gas Journal, y otras fuentes confiables cuando no hay datos directos disponibles.",
+                icon: Info,
+                color: "purple"
+            },
+            {
+                title: "Verificación y Validación",
+                description: "Proceso riguroso de validación que combina múltiples fuentes y metodologías estandarizadas para asegurar la precisión y confiabilidad de los datos.",
+                icon: Database,
+                color: "purple"
+            }
+        ]
+    },
+    emisiones: {
+        icon: Flame,
+        title: "Tipos de Emisiones",
+        gradient: "from-red-600 to-orange-700",
+        hoverGradient: "group-hover:from-red-800/60 group-hover:to-orange-800/60",
+        bgGlow: "from-red-500/10 to-orange-500/10",
+        textGradient: "from-red-400 to-orange-300",
+        items: [
+            {
+                title: "Emisiones Directas (Scope 1)",
+                description: "Emisiones generadas directamente por las operaciones y actividades controladas por la empresa, incluyendo la producción, procesamiento y transporte.",
+                icon: Flame,
+                color: "red"
+            },
+            {
+                title: "Emisiones Indirectas (Scope 3)",
+                description: "Emisiones resultantes del uso final de los productos vendidos por la empresa, representando a menudo la mayor parte del impacto climático total.",
+                icon: Cloud,
+                color: "red"
+            },
+            {
+                title: "Emisiones Fugitivas",
+                description: "Liberaciones no intencionales de gases durante los procesos de extracción, procesamiento y transporte, incluyendo fugas y venteos.",
+                icon: Cloud,
+                color: "red"
+            }
+        ]
+    },
+    combustibles: {
+        icon: Droplet,
+        title: "Combustibles",
+        gradient: "from-amber-600 to-orange-700",
+        hoverGradient: "group-hover:from-amber-800/60 group-hover:to-orange-800/60",
+        bgGlow: "from-amber-500/10 to-orange-500/10",
+        textGradient: "from-amber-400 to-orange-300",
+        items: [
+            {
+                title: "Petróleo y GNL",
+                description: "Medido en barriles. Incluye petróleo crudo y líquidos de gas natural. Principal fuente de combustible para el transporte global.",
+                icon: Droplet,
+                color: "amber"
+            },
+            {
+                title: "Gas Natural",
+                description: "Medido en pies cúbicos. Fuente crucial para la generación eléctrica y calefacción industrial. Considerado más limpio que otros combustibles fósiles.",
+                icon: Flame,
+                color: "amber"
+            },
+            {
+                title: "Carbón",
+                description: "Medido en toneladas. Incluye carbón térmico y metalúrgico. Sigue siendo una fuente significativa de energía en muchos países en desarrollo.",
+                icon: Factory,
+                color: "amber"
+            }
+        ]
+    }
+};
+
+// Función de filtrado mejorada
+const filterSections = (sections, searchTerm) => {
+    return Object.entries(sections).reduce((acc, [key, section]) => {
+        const filteredItems = section.items.filter(item =>
+            item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            item.description.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        
+        if (filteredItems.length > 0) {
+            acc[key] = {
+                ...section,
+                items: filteredItems,
+                matchCount: filteredItems.length
+            };
+        }
+        return acc;
+    }, {});
+};
+// Header Component
+const DictionaryHeader = ({ searchTerm, onSearchChange, onClose }) => (
+    <div className="relative p-6 bg-gradient-to-br from-gray-900 to-black border-b border-gray-800/50">
+        <div className="absolute inset-0 bg-blue-500/5 animate-pulse-slow" />
+        
+        {/* Title Section */}
+        <div className="relative flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4">
+                <div className="p-3 bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-xl backdrop-blur-sm">
+                    <BookOpen className="w-7 h-7 text-blue-400" />
+                </div>
+                <div>
+                    <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                        Diccionario de Carbono
+                    </h2>
+                    <p className="text-gray-400 mt-1">
+                        Guía completa de términos y conceptos
+                    </p>
+                </div>
+            </div>
+            
+            <button
+                onClick={onClose}
+                className="p-3 rounded-xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 hover:from-red-900/50 hover:to-red-800/50 transition-all duration-300 group"
+            >
+                <X className="w-6 h-6 text-gray-400 group-hover:text-red-300 transition-colors duration-300" />
+            </button>
+        </div>
+
+        {/* Search Bar */}
+        <SearchInput 
+            value={searchTerm}
+            onChange={onSearchChange}
+        />
+    </div>
+);
+
+// Navigation Bar Component
+const NavigationBar = ({ activeSection, setActiveSection, sections }) => (
+    <div className="overflow-x-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-800">
+        <div className="flex gap-2 p-4 bg-black/50">
+            {Object.entries(sections).map(([key, section]) => (
+                <NavButton
+                    key={key}
+                    active={activeSection === key}
+                    onClick={() => setActiveSection(key)}
+                    icon={section.icon}
+                    label={section.title}
+                    gradient={section.gradient}
+                />
+            ))}
+        </div>
+    </div>
+);
+
+// Content Section Component
+const ContentSection = ({ section, animateCards }) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+        {section.items.map((item, index) => (
+            <DictionaryCard
+                key={`${item.title}-${index}`}
+                title={item.title}
+                description={item.description}
+                icon={item.icon}
+                className={`
+                    transform transition-all duration-500
+                    ${animateCards ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}
+                    border-${item.color}-500/20 hover:border-${item.color}-500/30
+                `}
+                style={{
+                    transitionDelay: `${index * 100}ms`
+                }}
+            />
+        ))}
+    </div>
+);
+
+// Footer Component
+const DictionaryFooter = () => (
+    <div className="p-4 bg-gradient-to-br from-gray-900 to-black border-t border-gray-800/50">
+        <div className="flex items-center justify-between text-sm text-gray-400">
+            <span className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                Actualizado 2024
+            </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                Carbon Majors Database
+            </span>
+        </div>
+    </div>
+);
+
+// Empty State Component
+const EmptyState = () => (
+    <div className="flex flex-col items-center justify-center h-64 text-center p-6">
+        <Database className="w-16 h-16 text-gray-600 mb-4" />
+        <h3 className="text-xl font-bold text-gray-400 mb-2">
+            No se encontraron resultados
+        </h3>
+        <p className="text-gray-500 max-w-md">
+            Intenta buscar con otros términos o navega por las categorías disponibles
+        </p>
+    </div>
+);
+
+// Loading State Component
+const LoadingState = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+        {[...Array(6)].map((_, i) => (
+            <div 
+                key={i}
+                className="h-48 rounded-xl bg-gradient-to-br from-gray-900/90 to-black
+                         border border-gray-800/50 animate-pulse"
+            />
+        ))}
+    </div>
+);
+// Main Component
 const CarbonDictionary = ({ isVisible, onClose }) => {
     const [activeSection, setActiveSection] = useState('general');
     const [searchTerm, setSearchTerm] = useState('');
@@ -8,436 +382,109 @@ const CarbonDictionary = ({ isVisible, onClose }) => {
     useEffect(() => {
         if (isVisible) {
             setAnimateCards(true);
+            document.body.style.overflow = 'hidden';
         }
-    }, [isVisible, activeSection]);
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isVisible]);
 
     if (!isVisible) return null;
 
-    // SVG Icons personalizados y animados
-    const Icons = {
-        Book: () => (
-            <svg viewBox="0 0 24 24" className="w-6 h-6">
-                <path 
-                    d="M2 6s1.5-2 5-2 5 2 5 2v14s-1.5-1-5-1-5 1-5 1V6zm10 0s1.5-2 5-2 5 2 5 2v14s-1.5-1-5-1-5 1-5 1V6z"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                >
-                    <animate
-                        attributeName="stroke-dasharray"
-                        from="0 100"
-                        to="100 100"
-                        dur="1.5s"
-                        begin="0s"
-                        fill="freeze"
-                    />
-                </path>
-            </svg>
-        ),
-        Factory: () => (
-            <svg viewBox="0 0 24 24" className="w-6 h-6">
-                <path 
-                    d="M12 16V4l-6 6v6m12 0V8l-6 4v4M2 20h20"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                >
-                    <animate
-                        attributeName="stroke-dasharray"
-                        from="0 100"
-                        to="100 100"
-                        dur="1.5s"
-                        begin="0s"
-                        fill="freeze"
-                    />
-                </path>
-            </svg>
-        ),
-        Data: () => (
-            <svg viewBox="0 0 24 24" className="w-6 h-6">
-                <g fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="8">
-                        <animate
-                            attributeName="r"
-                            values="8;7;8"
-                            dur="2s"
-                            repeatCount="indefinite"
-                        />
-                    </circle>
-                    <path d="M12 4v16M4 12h16">
-                        <animate
-                            attributeName="stroke-dasharray"
-                            from="0 100"
-                            to="100 100"
-                            dur="1.5s"
-                            begin="0s"
-                            fill="freeze"
-                        />
-                    </path>
-                </g>
-            </svg>
-        ),
-        Emission: () => (
-            <svg viewBox="0 0 24 24" className="w-6 h-6">
-                <path
-                    d="M12 4c-3 0-6 2-6 6 0 4 6 10 6 10s6-6 6-10c0-4-3-6-6-6z"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                >
-                    <animate
-                        attributeName="stroke-dasharray"
-                        from="0 100"
-                        to="100 100"
-                        dur="1.5s"
-                        begin="0s"
-                        fill="freeze"
-                    />
-                </path>
-            </svg>
-        ),
-        Fuel: () => (
-            <svg viewBox="0 0 24 24" className="w-6 h-6">
-                <path
-                    d="M12 2l-6 12h12L12 2zm0 20l-3-6h6l-3 6z"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                >
-                    <animate
-                        attributeName="stroke-dasharray"
-                        from="0 100"
-                        to="100 100"
-                        dur="1.5s"
-                        begin="0s"
-                        fill="freeze"
-                    />
-                </path>
-            </svg>
-        ),
-        Search: () => (
-            <svg viewBox="0 0 24 24" className="w-5 h-5">
-                <circle
-                    cx="11"
-                    cy="11"
-                    r="7"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                >
-                    <animate
-                        attributeName="r"
-                        values="7;6.5;7"
-                        dur="2s"
-                        repeatCount="indefinite"
-                    />
-                </circle>
-                <path
-                    d="M21 21l-4.35-4.35"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                >
-                    <animate
-                        attributeName="stroke-dasharray"
-                        from="0 20"
-                        to="20 20"
-                        dur="1s"
-                        begin="0s"
-                        fill="freeze"
-                    />
-                </path>
-            </svg>
-        )
-    };
-
-    const sections = {
-        general: {
-            icon: Icons.Book,
-            title: "Conceptos Generales",
-            bgGradient: "from-emerald-500 to-teal-700",
-            items: [
-                {
-                    title: "Carbon Majors Database",
-                    description: "Base de datos que rastrea las emisiones de gases de efecto invernadero desde 1854 hasta la actualidad, vinculándolas directamente con las empresas productoras.",
-                    icon: Icons.Data
-                },
-                {
-                    title: "Gases de Efecto Invernadero",
-                    description: "Gases atmosféricos que retienen el calor y contribuyen al cambio climático. Los principales son CO2, metano y óxido nitroso.",
-                    icon: Icons.Emission
-                },
-                {
-                    title: "MtCO2e",
-                    description: "Millones de toneladas de CO2 equivalente. Unidad estándar para medir las emisiones de gases de efecto invernadero.",
-                    icon: Icons.Data
-                }
-            ]
-        },
-        empresas: {
-            icon: Icons.Factory,
-            title: "Tipos de Empresas",
-            bgGradient: "from-blue-500 to-indigo-700",
-            items: [
-                {
-                    title: "Empresas Privadas",
-                    description: "Compañías de propiedad de inversores privados que producen combustibles fósiles.",
-                    icon: Icons.Factory
-                },
-                {
-                    title: "Empresas Estatales",
-                    description: "Compañías controladas en más del 50% por gobiernos nacionales.",
-                    icon: Icons.Factory
-                },
-                {
-                    title: "Productores Nacionales",
-                    description: "Producción directamente controlada por estados, común en el sector del carbón.",
-                    icon: Icons.Factory
-                }
-            ]
-        },
-        datos: {
-            icon: Icons.Data,
-            title: "Fuentes de Datos",
-            bgGradient: "from-purple-500 to-pink-700",
-            items: [
-                {
-                    title: "Datos Autorreportados",
-                    description: "Información proporcionada directamente por las empresas en informes anuales y documentos oficiales.",
-                    icon: Icons.Data
-                },
-                {
-                    title: "Fuentes Externas",
-                    description: "Datos de agencias como EIA, Oil & Gas Journal y otros cuando no hay datos directos disponibles.",
-                    icon: Icons.Data
-                },
-                {
-                    title: "Verificación",
-                    description: "Proceso de validación de datos usando múltiples fuentes y metodologías estandarizadas.",
-                    icon: Icons.Data
-                }
-            ]
-        },
-        emisiones: {
-            icon: Icons.Emission,
-            title: "Tipos de Emisiones",
-            bgGradient: "from-orange-500 to-red-700",
-            items: [
-                {
-                    title: "Emisiones Directas (Scope 1)",
-                    description: "Emisiones generadas directamente por las operaciones de la empresa.",
-                    icon: Icons.Emission
-                },
-                {
-                    title: "Emisiones Indirectas (Scope 3)",
-                    description: "Emisiones producidas por el uso final de los productos vendidos por la empresa.",
-                    icon: Icons.Emission
-                },
-                {
-                    title: "Emisiones Fugitivas",
-                    description: "Escapes no intencionales de gases durante la producción y transporte.",
-                    icon: Icons.Emission
-                }
-            ]
-        },
-        combustibles: {
-            icon: Icons.Fuel,
-            title: "Combustibles",
-            bgGradient: "from-yellow-500 to-orange-700",
-            items: [
-                {
-                    title: "Petróleo y GNL",
-                    description: "Medido en barriles. Incluye petróleo crudo y líquidos de gas natural.",
-                    icon: Icons.Fuel
-                },
-                {
-                    title: "Gas Natural",
-                    description: "Medido en pies cúbicos. Principal fuente de energía para generación eléctrica.",
-                    icon: Icons.Fuel
-                },
-                {
-                    title: "Carbón",
-                    description: "Medido en toneladas. Incluye diferentes tipos como térmico y metalúrgico.",
-                    icon: Icons.Fuel
-                }
-            ]
-        }
-    };
-
-    const filteredSections = Object.entries(sections).reduce((acc, [key, section]) => {
-        const filteredItems = section.items.filter(item =>
-            item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.description.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        if (filteredItems.length > 0) {
-            acc[key] = { ...section, items: filteredItems };
-        }
-        return acc;
-    }, {});
+    const filteredSections = filterSections(sections, searchTerm);
+    const currentSection = searchTerm ? filteredSections[activeSection] : sections[activeSection];
 
     return (
-        <div className="fixed inset-0 bg-black/30 backdrop-blur-md flex items-center justify-center p-4 z-50">
-            <div className="w-full max-w-6xl max-h-[90vh] overflow-hidden rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 shadow-2xl transform transition-all duration-500 scale-100">
-                {/* Header con glassmorphism */}
-                <div className="relative p-6 backdrop-blur-sm bg-white/80 border-b border-slate-200">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                            <div className="p-3 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-xl shadow-lg text-white">
-                                <Icons.Book />
-                            </div>
-                            <h2 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-800 bg-clip-text text-transparent">
-                                Diccionario de Carbono
-                            </h2>
-                        </div>
-                        <button
-                            onClick={onClose}
-                            className="p-2 rounded-lg hover:bg-slate-200/50 transition-all duration-300"
-                        >
-                            <svg viewBox="0 0 24 24" className="w-6 h-6 text-slate-600">
-                                <path
-                                    d="M18 6L6 18M6 6l12 12"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-xl z-50">
+            <div className="h-full overflow-hidden">
+                <div className="container mx-auto p-4">
+                    <div className="w-full max-w-7xl mx-auto bg-gradient-to-br from-gray-900 to-black rounded-2xl overflow-hidden shadow-2xl border border-gray-800/50">
+                        {/* Header Section */}
+                        <DictionaryHeader
+                            searchTerm={searchTerm}
+                            onSearchChange={(e) => setSearchTerm(e.target.value)}
+                            onClose={onClose}
+                        />
+
+                        {/* Navigation */}
+                        <NavigationBar
+                            activeSection={activeSection}
+                            setActiveSection={setActiveSection}
+                            sections={sections}
+                        />
+
+                        {/* Main Content */}
+                        <div className="overflow-y-auto max-h-[calc(90vh-300px)] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-800">
+                            {currentSection ? (
+                                <ContentSection
+                                    section={currentSection}
+                                    animateCards={animateCards}
                                 />
-                            </svg>
-                        </button>
-                    </div>
-
-                    {/* Barra de búsqueda con animación */}
-                    <div className="mt-6 relative group">
-                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-200 to-teal-200 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-300" />
-                        <div className="relative flex items-center">
-                            <input
-                                type="text"
-                                placeholder="Buscar conceptos..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full px-12 py-3 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all duration-300"
-                            />
-                            <div className="absolute left-4 text-slate-400">
-                                <Icons.Search />
-                            </div>
+                            ) : searchTerm ? (
+                                <EmptyState />
+                            ) : (
+                                <LoadingState />
+                            )}
                         </div>
-                    </div>
 
-                    {/* Navegación */}
-                    <div className="mt-6 flex gap-2 overflow-x-auto pb-2">
-                        {Object.entries(sections).map(([key, section]) => {
-                            const Icon = section.icon;
-                            return (
-                                <button
-                                    key={key}
-                                    onClick={() => setActiveSection(key)}
-                                    className={`
-                                        flex items-center gap-2 px-4 py-2 rounded-lg
-                                        transition-all duration-300 whitespace-nowrap
-                                        ${activeSection === key
-                                            ? `bg-gradient-to-r ${section.bgGradient} text-white shadow-lg`
-                                            : 'bg-white hover:bg-slate-50 text-slate-700'
-                                        }
-                                    `}
-                                >
-                                    <Icon />
-                                    {section.title}
-                                </button>
-                            );
-                        })}
-                    </div>
-                </div>
-
-                {/* Contenido principal con cards animadas */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6 overflow-y-auto max-h-[calc(90vh-280px)]">
-                    {(searchTerm ? filteredSections[activeSection]?.items : sections[activeSection].items).map((item, index) => (
-                        <div
-                            key={index}
-                            className={`
-                                relative group p-6 bg-white rounded-xl shadow-lg
-                                hover:shadow-2xl transition-all duration-500 transform
-                                ${animateCards ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}
-                            `}
-                            style={{
-                                transitionDelay: `${index * 100}ms`
-                            }}
-                        >
-                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                            <div className="relative z-10">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="p-2 bg-gradient-to-br from-emerald-400/20 to-teal-400/20 rounded-lg">
-                                        <item.icon />
-                                    </div>
-                                    <h3 className="text-xl font-semibold text-slate-800">
-                                        {item.title}
-                                    </h3>
-                                </div>
-                                <p className="text-slate-600 leading-relaxed">
-                                    {item.description}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Footer con gradiente y animación */}
-                <div className="p-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-t border-slate-200">
-                    <div className="flex items-center justify-between text-sm text-slate-600">
-                        <span className="flex items-center gap-2">
-                            <svg className="w-4 h-4 text-emerald-500" viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <animate
-                                        attributeName="r"
-                                        values="10;9;10"
-                                        dur="3s"
-                                        repeatCount="indefinite"
-                                    />
-                                </circle>
-                            </svg>
-                            Actualizado 2024
-                        </span>
-                        <span>Carbon Majors Database</span>
+                        {/* Footer */}
+                        <DictionaryFooter />
                     </div>
                 </div>
             </div>
 
-            <style jsx>{`
-                ::-webkit-scrollbar {
-                    width: 8px;
-                    height: 8px;
-                }
-                
-                ::-webkit-scrollbar-track {
-                    background: transparent;
-                }
-                
-                ::-webkit-scrollbar-thumb {
-                    background: rgba(100, 116, 139, 0.5);
-                    border-radius: 4px;
-                }
-                
-                ::-webkit-scrollbar-thumb:hover {
-                    background: rgba(100, 116, 139, 0.7);
-                }
-
-                @keyframes fadeIn {
-                    from {
-                        opacity: 0;
-                        transform: translateY(20px);
+            {/* Global Styles */}
+            <style>
+                {`
+                    .scrollbar-thin::-webkit-scrollbar {
+                        width: 6px;
+                        height: 6px;
                     }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
 
-                .animate-fadeIn {
-                    animation: fadeIn 0.5s ease-out forwards;
-                }
-            `}</style>
+                    .scrollbar-thin::-webkit-scrollbar-track {
+                        background: transparent;
+                    }
+
+                    .scrollbar-thin::-webkit-scrollbar-thumb {
+                        background: rgba(255, 255, 255, 0.1);
+                        border-radius: 3px;
+                    }
+
+                    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+                        background: rgba(255, 255, 255, 0.2);
+                    }
+
+                    @keyframes fadeIn {
+                        from {
+                            opacity: 0;
+                            transform: translateY(10px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+
+                    @keyframes pulse-slow {
+                        0%, 100% {
+                            opacity: 1;
+                        }
+                        50% {
+                            opacity: 0.5;
+                        }
+                    }
+
+                    .animate-fadeIn {
+                        animation: fadeIn 0.5s ease-out forwards;
+                    }
+
+                    .animate-pulse-slow {
+                        animation: pulse-slow 3s ease-in-out infinite;
+                    }
+                `}
+            </style>
         </div>
     );
 };
 
 export default CarbonDictionary;
-                            

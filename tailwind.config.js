@@ -7,6 +7,7 @@ export default {
   ],
   theme: {
     extend: {
+      
       animation: {
         'fade-in': 'fadeIn 1s ease-out forwards',
         'slide-in': 'slideIn 1s ease-out forwards',

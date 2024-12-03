@@ -16,7 +16,6 @@ import GlobalPredictionsWindow from './GlobalPredictionsWindow';
 import EducationalDashboard from './EducationalDashboard';
 import CarbonDictionary from './CarbonDictionary';
 import WelcomeAnimation from './WelcomeAnimation';
-import RatingButton from './RatingButton';
 import RatingModal from './RatingModal';
 import RatingsDashboard from './RatingDashboard';
 import MenuButton from './MenuButton';
@@ -42,7 +41,7 @@ const AnimatedCountryHeader = ({ country, isMobile }) => {
                 </div>
             </div>
 
-            <style jsx>{`
+            <style>{`
                 .flag-container {
                     transform-style: preserve-3d;
                     perspective: 1000px;
@@ -360,7 +359,7 @@ const InteractiveGlobe = () => {
         const handleTouchStart = (event) => {
             event.preventDefault();
             isTouchingRef.current = true;
-            
+
             const touch = event.touches[0];
             touchStartRef.current = {
                 x: touch.clientX,
@@ -376,7 +375,7 @@ const InteractiveGlobe = () => {
         const handleTouchMove = (event) => {
             if (!isTouchingRef.current) return;
             event.preventDefault();
-            
+
             if (controlsRef.current) {
                 controlsRef.current.autoRotate = false;
             }
@@ -555,7 +554,7 @@ const InteractiveGlobe = () => {
             } else {
                 window.removeEventListener('click', handleInteraction);
             }
-            
+
             window.removeEventListener('resize', handleResize);
             window.removeEventListener('orientationchange', handleResize);
 
@@ -594,25 +593,25 @@ const InteractiveGlobe = () => {
                     WebkitTapHighlightColor: 'transparent'
                 }}
             />
-
+    
             <NeonTitle isMobile={isMobile} />
-
+    
             {selectedCountry && (
                 <AnimatedCountryHeader
                     country={selectedCountry}
                     isMobile={isMobile}
                 />
             )}
-
+    
             <Controls
                 onPause={handlePause}
                 isPlaying={isPlaying}
                 isMobile={isMobile}
                 onSpeedChange={handleSpeedChange}
             />
-
+    
             <TeamInfoBox isMobile={isMobile} />
-            
+    
             <MenuButton
                 isMobile={isMobile}
                 setShowGlobal={setShowGlobal}
@@ -621,10 +620,10 @@ const InteractiveGlobe = () => {
                 setShowGlobalPredictions={setShowGlobalPredictions}
                 setShowDictionary={setShowDictionary}
                 setShowEducational={setShowEducational}
+                setShowRatingsDashboard={setShowRatingsDashboard}
                 setIsRatingModalOpen={setIsRatingModalOpen}
-                setshowRatingsDashboard={setShowRatingsDashboard}
             />
-
+    
             <GlobalDashboard
                 isVisible={showGlobal}
                 onClose={() => setShowGlobal(false)}
@@ -633,7 +632,7 @@ const InteractiveGlobe = () => {
                     isMobile ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
                 }`}
             />
-
+    
             <SimulationDashboard
                 isVisible={showSimulation}
                 onClose={() => setShowSimulation(false)}
@@ -642,7 +641,7 @@ const InteractiveGlobe = () => {
                     isMobile ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
                 }`}
             />
-
+    
             <PredictionsDashboard
                 isVisible={showPredictions}
                 onClose={() => setShowPredictions(false)}
@@ -651,7 +650,7 @@ const InteractiveGlobe = () => {
                     isMobile ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
                 }`}
             />
-
+    
             <GlobalPredictionsWindow
                 isVisible={showGlobalPredictions}
                 onClose={() => setShowGlobalPredictions(false)}
@@ -660,7 +659,7 @@ const InteractiveGlobe = () => {
                     isMobile ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
                 }`}
             />
-
+    
             <EducationalDashboard
                 isVisible={showEducational}
                 onClose={() => setShowEducational(false)}
@@ -669,7 +668,7 @@ const InteractiveGlobe = () => {
                     isMobile ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
                 }`}
             />
-
+    
             <CarbonDictionary
                 isVisible={showDictionary}
                 onClose={() => setShowDictionary(false)}
@@ -678,30 +677,32 @@ const InteractiveGlobe = () => {
                     isMobile ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
                 }`}
             />
-
+    
             <RatingModal
                 isOpen={isRatingModalOpen}
                 onClose={() => setIsRatingModalOpen(false)}
                 isMobile={isMobile}
                 className={isMobile ? 'w-[90vw] max-w-sm mx-auto' : 'w-96'}
             />
-
-            <RatingsDashboard
-                isVisible={showRatingsDashboard}
-                onClose={() => setShowRatingsDashboard(false)}
-                isMobile={isMobile}
-                className={`fixed transition-all duration-300 ease-in-out ${
-                    isMobile ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
-                }`}
-            />
-
+    
+            {showRatingsDashboard && (
+                <RatingsDashboard
+                    isVisible={showRatingsDashboard}
+                    onClose={() => setShowRatingsDashboard(false)}
+                    isMobile={isMobile}
+                    className={`fixed transition-all duration-300 ease-in-out ${
+                        isMobile ? 'inset-x-0 bottom-0 h-[80vh] rounded-t-2xl' : 'right-8 bottom-8 w-96 rounded-xl'
+                    }`}
+                />
+            )}
+    
             {showWelcome && (
                 <WelcomeAnimation
                     onComplete={() => setShowWelcome(false)}
                     isMobile={isMobile}
                 />
             )}
-
+    
             {selectedCountry && (
                 <CountryDashboard
                     country={selectedCountry}

@@ -1,12 +1,13 @@
-import React from 'react'
-import InteractiveGlobe from './components/InteractiveGlobe'
+import React from "react";
+import InteractiveGlobe from "./components/InteractiveGlobe";
+import "./firebase/config";
 
 function App() {
   return (
-    <div className="w-full h-full">
+    <div className="App">
       <InteractiveGlobe />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,235 +1,467 @@
 import React, { useState, useEffect } from 'react';
+import {
+    Globe2,
+    Flame,
+    Wind,
+    AlertTriangle,
+    Activity,
+    X,
+    Leaf,
+    Cloud
+} from 'lucide-react';
 
-// Componente Card con estado propio
+// Enhanced Card Component
 const Card = ({ title, description, icon: Icon, className = "" }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     return (
-        <div 
+        <div
             className={`
                 relative overflow-hidden p-6 rounded-xl
-                bg-gradient-to-br from-gray-900/80 to-black
-                border border-gray-800 backdrop-blur-sm
-                transform transition-all duration-500
-                hover:scale-105 hover:shadow-2xl
+                bg-gradient-to-br from-gray-900/90 to-black
+                border border-gray-800/50 backdrop-blur-lg
+                transform transition-all duration-500 ease-in-out
+                hover:scale-102 hover:shadow-xl hover:shadow-blue-900/20
+                group
                 ${className}
             `}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <div className="relative z-10">
                 <div className="flex items-center gap-4 mb-4">
-                    <div className="p-2 rounded-lg bg-gray-800/50">
-                        <Icon />
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-gray-800/80 to-gray-900/80 group-hover:from-blue-900/20 group-hover:to-purple-900/20 transition-all duration-500">
+                        <Icon className="w-7 h-7 text-blue-400 group-hover:text-blue-300 transition-colors duration-500" />
                     </div>
-                    <h4 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">
+                    <h4 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300 group-hover:from-blue-300 group-hover:to-purple-300 transition-all duration-500">
                         {title}
                     </h4>
                 </div>
-                <p className="text-gray-400 leading-relaxed">
+                <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-500">
                     {description}
                 </p>
             </div>
             {isHovered && (
-                <div className="absolute inset-0 bg-white/5 rounded-xl animate-pulse-slow" />
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-xl animate-pulse-slow" />
             )}
         </div>
     );
 };
 
-// Componente de Acción Animada
+// Enhanced Action Item Component
 const AnimatedActionItem = ({ title, description, icon: Icon }) => (
-    <div className="group p-4 bg-black/20 rounded-lg border border-gray-800 hover:border-blue-500/30 transition-all duration-300">
-        <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-blue-900/30 group-hover:bg-blue-900/50 transition-all">
-                <Icon />
+    <div className="group p-4 bg-gradient-to-br from-black/40 to-gray-900/40 rounded-xl border border-gray-800/50 hover:border-blue-500/30 hover:from-blue-900/10 hover:to-purple-900/10 transition-all duration-500">
+        <div className="flex items-center gap-4">
+            <div className="p-2 rounded-xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 group-hover:from-blue-900/30 group-hover:to-purple-900/30 transition-all duration-500">
+                <Icon className="w-6 h-6 text-blue-400 group-hover:text-blue-300 transition-colors duration-500" />
             </div>
             <div>
-                <h5 className="font-semibold text-blue-300">{title}</h5>
-                <p className="text-gray-400 text-sm">{description}</p>
+                <h5 className="font-semibold text-blue-300 group-hover:text-blue-200 transition-colors duration-500">{title}</h5>
+                <p className="text-gray-400 text-sm group-hover:text-gray-300 transition-colors duration-500">{description}</p>
             </div>
         </div>
     </div>
 );
 
-// Componente de Tarjeta de Demandas
+// Enhanced Demand Card Component
 const DemandCard = ({ title, icon: Icon, demands }) => (
-    <div className="p-6 bg-gradient-to-br from-purple-600/20 to-purple-900/20 rounded-xl border border-purple-500/30">
-        <div className="flex items-center gap-4 mb-4">
-            <div className="p-2 rounded-lg bg-black/20">
-                <Icon />
+    <div className="p-6 bg-gradient-to-br from-purple-900/10 to-blue-900/10 hover:from-purple-900/20 hover:to-blue-900/20 rounded-xl border border-purple-500/20 hover:border-purple-500/30 transition-all duration-500 group">
+        <div className="flex items-center gap-4 mb-6">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 group-hover:from-purple-900/30 group-hover:to-blue-900/30 transition-all duration-500">
+                <Icon className="w-7 h-7 text-purple-400 group-hover:text-purple-300 transition-colors duration-500" />
             </div>
-            <h4 className="text-xl font-bold text-purple-400">{title}</h4>
+            <h4 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400 group-hover:from-purple-300 group-hover:to-blue-300 transition-all duration-500">
+                {title}
+            </h4>
         </div>
-        <ul className="space-y-3">
+        <ul className="space-y-4">
             {demands.map((demand, index) => (
-                <li key={index} className="flex items-center gap-2 text-gray-300">
-                    <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+                <li key={index} className="flex items-center gap-3 text-gray-300 group-hover:text-gray-200 transition-colors duration-500">
+                    <span className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 group-hover:from-purple-400 group-hover:to-blue-400 transition-all duration-500" />
                     {demand}
                 </li>
             ))}
         </ul>
     </div>
 );
-
-// Componentes de Iconos SVG Animados
+// Enhanced Custom Icons with Animations
 const CustomIcons = {
     Earth: () => (
-        <svg viewBox="0 0 24 24" className="w-8 h-8">
-            <circle
-                cx="12"
-                cy="12"
-                r="10"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="animate-pulse-slow"
-            >
-                <animate
-                    attributeName="r"
-                    values="10;9;10"
-                    dur="3s"
-                    repeatCount="indefinite"
-                />
-            </circle>
-            <path
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
-                fill="currentColor"
-                className="text-emerald-500"
-            >
-                <animateTransform
-                    attributeName="transform"
-                    type="rotate"
-                    from="0 12 12"
-                    to="360 12 12"
-                    dur="20s"
-                    repeatCount="indefinite"
-                />
-            </path>
-        </svg>
+        <div className="relative w-8 h-8 group">
+            <Globe2
+                className="w-8 h-8 text-emerald-400 group-hover:text-emerald-300 transition-colors duration-500 animate-pulse"
+                strokeWidth={1.5}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-green-500/20 rounded-full blur-xl animate-pulse-slow opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </div>
     ),
-    Protest: () => (
-        <svg viewBox="0 0 24 24" className="w-8 h-8">
-            <path
-                d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                className="text-blue-500"
-            >
-                <animate
-                    attributeName="stroke-dasharray"
-                    values="1,150;150,1"
-                    dur="2s"
-                    repeatCount="indefinite"
-                />
-            </path>
-        </svg>
+    Crisis: () => (
+        <div className="relative w-8 h-8 group">
+            <Flame
+                className="w-8 h-8 text-red-400 group-hover:text-red-300 transition-colors duration-500"
+                strokeWidth={1.5}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-full blur-xl animate-pulse-slow opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </div>
+    ),
+    Action: () => (
+        <div className="relative w-8 h-8 group">
+            <Activity
+                className="w-8 h-8 text-blue-400 group-hover:text-blue-300 transition-colors duration-500"
+                strokeWidth={1.5}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-full blur-xl animate-pulse-slow opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </div>
     ),
     Warning: () => (
-        <svg viewBox="0 0 24 24" className="w-8 h-8">
-            <path
-                d="M12 2L2 22h20L12 2z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="text-red-500"
-            >
-                <animate
-                    attributeName="stroke-dasharray"
-                    values="0,100;100,0"
-                    dur="2s"
-                    repeatCount="indefinite"
-                />
-            </path>
-            <line
-                x1="12"
-                y1="9"
-                x2="12"
-                y2="15"
-                stroke="currentColor"
-                strokeWidth="2"
-            >
-                <animate
-                    attributeName="strokeOpacity"
-                    values="0;1;1;0"
-                    dur="1.5s"
-                    repeatCount="indefinite"
-                />
-            </line>
-        </svg>
+        <div className="relative w-8 h-8 group">
+            <AlertTriangle
+                className="w-8 h-8 text-purple-400 group-hover:text-purple-300 transition-colors duration-500"
+                strokeWidth={1.5}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-xl animate-pulse-slow opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </div>
     ),
-    Fire: () => (
-        <svg viewBox="0 0 24 24" className="w-8 h-8">
-            <path
-                d="M12 2c0 0-3 4-3 6c0 1.5 1 2 1 2s-1.5-0.5-1.5 1c0 1.5 1 2 1 2s-1.5-0.5-1.5 1c0 1.5 3 2 3 2s-1.5-0.5-1.5 1c0 1.5 1.5 2 1.5 2s-1.5-0.5-1.5 1c0 1.5 3 2 3 2"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="text-orange-500"
-            >
-                <animate
-                    attributeName="d"
-                    values="M12 2c0 0-3 4-3 6c0 1.5 1 2 1 2s-1.5-0.5-1.5 1c0 1.5 1 2 1 2s-1.5-0.5-1.5 1c0 1.5 3 2 3 2s-1.5-0.5-1.5 1c0 1.5 1.5 2 1.5 2s-1.5-0.5-1.5 1c0 1.5 3 2 3 2;M12 2c0 0-2 4-2 6c0 1.5 1.5 2 1.5 2s-1-0.5-1 1c0 1.5 1.5 2 1.5 2s-1-0.5-1 1c0 1.5 2 2 2 2s-1-0.5-1 1c0 1.5 1.5 2 1.5 2s-1-0.5-1 1c0 1.5 2 2 2 2"
-                    dur="0.5s"
-                    repeatCount="indefinite"
-                />
-            </path>
-        </svg>
+    Wind: () => (
+        <div className="relative w-8 h-8 group">
+            <Wind
+                className="w-8 h-8 text-cyan-400 group-hover:text-cyan-300 transition-colors duration-500"
+                strokeWidth={1.5}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-full blur-xl animate-pulse-slow opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </div>
     ),
-    Wave: () => (
-        <svg viewBox="0 0 24 24" className="w-8 h-8">
-            <path
-                d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="text-blue-400"
-            >
-                <animate
-                    attributeName="d"
-                    values="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z;M2 12s4-4 10-4 10 4 10 4-4 4-10 4-10-4-10-4z;M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"
-                    dur="3s"
-                    repeatCount="indefinite"
-                />
-            </path>
-        </svg>
+    Leaf: () => (
+        <div className="relative w-8 h-8 group">
+            <Leaf
+                className="w-8 h-8 text-green-400 group-hover:text-green-300 transition-colors duration-500"
+                strokeWidth={1.5}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-full blur-xl animate-pulse-slow opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </div>
+    ),
+    Cloud: () => (
+        <div className="relative w-8 h-8 group">
+            <Cloud
+                className="w-8 h-8 text-sky-400 group-hover:text-sky-300 transition-colors duration-500"
+                strokeWidth={1.5}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-sky-500/20 to-blue-500/20 rounded-full blur-xl animate-pulse-slow opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </div>
     )
 };
-// Configuración de secciones
+
+// Enhanced Section Configuration
 const sections = [
     {
         id: 'purpose',
         icon: CustomIcons.Earth,
         label: 'Misión Global',
         color: 'from-emerald-600 to-green-800',
-        gradient: 'from-emerald-900/50 to-green-900/50'
+        gradient: 'from-emerald-900/50 to-green-900/50',
+        hoverGradient: 'group-hover:from-emerald-800/60 group-hover:to-green-800/60',
+        bgGlow: 'from-emerald-500/10 to-green-500/10',
+        textGradient: 'from-emerald-400 to-green-300'
     },
     {
         id: 'crisis',
-        icon: CustomIcons.Fire,
+        icon: CustomIcons.Crisis,
         label: 'Crisis Climática',
         color: 'from-red-600 to-orange-700',
-        gradient: 'from-red-900/50 to-orange-900/50'
+        gradient: 'from-red-900/50 to-orange-900/50',
+        hoverGradient: 'group-hover:from-red-800/60 group-hover:to-orange-800/60',
+        bgGlow: 'from-red-500/10 to-orange-500/10',
+        textGradient: 'from-red-400 to-orange-300'
     },
     {
         id: 'action',
-        icon: CustomIcons.Protest,
+        icon: CustomIcons.Action,
         label: 'Acción Ciudadana',
         color: 'from-blue-600 to-indigo-800',
-        gradient: 'from-blue-900/50 to-indigo-900/50'
+        gradient: 'from-blue-900/50 to-indigo-900/50',
+        hoverGradient: 'group-hover:from-blue-800/60 group-hover:to-indigo-800/60',
+        bgGlow: 'from-blue-500/10 to-indigo-500/10',
+        textGradient: 'from-blue-400 to-indigo-300'
     },
     {
         id: 'demands',
         icon: CustomIcons.Warning,
         label: 'Exigencias',
         color: 'from-purple-600 to-pink-700',
-        gradient: 'from-purple-900/50 to-pink-900/50'
+        gradient: 'from-purple-900/50 to-pink-900/50',
+        hoverGradient: 'group-hover:from-purple-800/60 group-hover:to-pink-800/60',
+        bgGlow: 'from-purple-500/10 to-pink-500/10',
+        textGradient: 'from-purple-400 to-pink-300'
     }
 ];
 
+// Enhanced Navigation Button Component
+const NavButton = ({ section, isActive, onClick }) => (
+    <button
+        onClick={onClick}
+        className={`
+            relative group flex items-center gap-3 px-6 py-3 rounded-xl
+            transition-all duration-500 ease-in-out
+            ${isActive
+                ? `bg-gradient-to-r ${section.color} scale-105 shadow-lg shadow-${section.color}/20`
+                : 'bg-gradient-to-r from-gray-800/50 to-gray-900/50 hover:from-gray-800/70 hover:to-gray-900/70'
+            }
+        `}
+    >
+        <section.icon />
+        <span className={`
+            font-medium whitespace-nowrap
+            ${isActive ? 'text-white' : 'text-gray-300 group-hover:text-white'}
+            transition-colors duration-500
+        `}>
+            {section.label}
+        </span>
+        {isActive && (
+            <div className={`
+                absolute inset-0 bg-gradient-to-r ${section.bgGlow}
+                rounded-xl blur-xl animate-pulse-slow
+            `} />
+        )}
+    </button>
+);
+
+// Enhanced Close Button Component
+const CloseButton = ({ onClick }) => (
+    <button
+        onClick={onClick}
+        className="p-3 rounded-xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 hover:from-red-900/50 hover:to-red-800/50 transition-all duration-500 group"
+    >
+        <X className="w-6 h-6 text-gray-400 group-hover:text-red-300 transition-colors duration-500" />
+    </button>
+);
+// Purpose Section Component
+const PurposeSection = () => (
+    <div className="space-y-8 animate-fadeIn">
+        <h3 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-300 leading-tight sm:text-5xl">
+            Nuestra Misión por el Planeta
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card
+                title="Visualización de Impacto"
+                description="Análisis en tiempo real de las emisiones globales y visualización de datos climáticos para crear conciencia sobre la crisis ambiental actual."
+                icon={CustomIcons.Earth}
+                className="border-emerald-500/20 hover:border-emerald-500/30"
+            />
+            <Card
+                title="Educación Ambiental"
+                description="Información actualizada y accesible sobre el cambio climático, sus efectos en ecosistemas y comunidades, y soluciones prácticas."
+                icon={CustomIcons.Cloud}
+                className="border-emerald-500/20 hover:border-emerald-500/30"
+            />
+            <Card
+                title="Movilización Global"
+                description="Red global de activistas y organizaciones unidas por la justicia climática, facilitando la colaboración y el impacto colectivo."
+                icon={CustomIcons.Action}
+                className="border-emerald-500/20 hover:border-emerald-500/30"
+            />
+            <Card
+                title="Soluciones Climáticas"
+                description="Propuestas innovadoras para la reducción de emisiones y transición energética, adaptadas a diferentes contextos y necesidades."
+                icon={CustomIcons.Leaf}
+                className="border-emerald-500/20 hover:border-emerald-500/30"
+            />
+        </div>
+    </div>
+);
+
+// Crisis Section Component
+const CrisisSection = () => (
+    <div className="space-y-8 animate-fadeIn">
+        <h3 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-300 leading-tight sm:text-5xl">
+            Crisis Climática: Tiempo de Actuar
+        </h3>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+                <div className="bg-gradient-to-br from-black/60 to-red-950/30 p-8 rounded-xl border border-red-500/30 space-y-6 hover:from-black/70 hover:to-red-950/40 transition-all duration-500">
+                    <div className="flex items-center gap-4">
+                        <CustomIcons.Crisis />
+                        <h4 className="text-3xl font-bold text-red-400">Punto Crítico Global</h4>
+                    </div>
+                    <div className="relative overflow-hidden rounded-xl aspect-video bg-gradient-to-br from-gray-900/80 to-black">
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="text-center space-y-4">
+                                <div className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
+                                    1.5°C
+                                </div>
+                                <div className="text-xl text-gray-400">
+                                    Límite crítico de calentamiento global
+                                </div>
+                                <div className="mt-4 max-w-lg mx-auto text-gray-300">
+                                    Estamos al borde de un punto sin retorno. Las emisiones actuales
+                                    nos dirigen hacia un calentamiento catastrófico si no actuamos de inmediato.
+                                </div>
+                            </div>
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                    </div>
+                </div>
+            </div>
+            <div className="space-y-6">
+                <Card
+                    title="Impacto Global"
+                    description="Los efectos son ya evidentes: eventos climáticos extremos, pérdida acelerada de biodiversidad y riesgos crecientes para millones de personas."
+                    icon={CustomIcons.Earth}
+                    className="border-red-500/20 hover:border-red-500/30"
+                />
+                <Card
+                    title="Urgencia Inmediata"
+                    description="La comunidad científica advierte que la próxima década es crucial para implementar cambios sistémicos y evitar daños irreversibles."
+                    icon={CustomIcons.Warning}
+                    className="border-red-500/20 hover:border-red-500/30"
+                />
+            </div>
+        </div>
+    </div>
+);
+
+// Action Section Component
+const ActionSection = () => (
+    <div className="space-y-8 animate-fadeIn">
+        <h3 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300 leading-tight sm:text-5xl">
+            Acción Climática: El Poder del Cambio
+        </h3>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-gradient-to-br from-black/60 to-blue-950/30 p-8 rounded-xl border border-blue-500/30 hover:from-black/70 hover:to-blue-950/40 transition-all duration-500">
+                <div className="flex items-center gap-4 mb-8">
+                    <CustomIcons.Wind />
+                    <h4 className="text-2xl font-bold text-blue-400">Acciones Individuales</h4>
+                </div>
+                <div className="space-y-4">
+                    <AnimatedActionItem
+                        title="Huella de Carbono"
+                        description="Monitorea y reduce tu impacto ambiental personal mediante cambios conscientes."
+                        icon={CustomIcons.Leaf}
+                    />
+                    <AnimatedActionItem
+                        title="Movilidad Sostenible"
+                        description="Prioriza opciones de transporte eco-amigables y reduce emisiones en tus desplazamientos."
+                        icon={CustomIcons.Wind}
+                    />
+                    <AnimatedActionItem
+                        title="Consumo Responsable"
+                        description="Adopta hábitos de consumo consciente y apoya productos y servicios sostenibles."
+                        icon={CustomIcons.Earth}
+                    />
+                </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-black/60 to-indigo-950/30 p-8 rounded-xl border border-indigo-500/30 hover:from-black/70 hover:to-indigo-950/40 transition-all duration-500">
+                <div className="flex items-center gap-4 mb-8">
+                    <CustomIcons.Action />
+                    <h4 className="text-2xl font-bold text-indigo-400">Acción Comunitaria</h4>
+                </div>
+                <div className="space-y-4">
+                    <AnimatedActionItem
+                        title="Activismo Climático"
+                        description="Únete a movimientos locales y globales que luchan por la justicia climática."
+                        icon={CustomIcons.Crisis}
+                    />
+                    <AnimatedActionItem
+                        title="Educación y Conciencia"
+                        description="Comparte conocimiento y motiva a otros a unirse a la causa ambiental."
+                        icon={CustomIcons.Cloud}
+                    />
+                    <AnimatedActionItem
+                        title="Iniciativas Locales"
+                        description="Participa en proyectos comunitarios de sostenibilidad y regeneración ambiental."
+                        icon={CustomIcons.Earth}
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div className="relative mt-8 p-8 bg-gradient-to-br from-black/60 to-blue-950/30 rounded-xl border border-blue-500/30 hover:from-black/70 hover:to-blue-950/40 transition-all duration-500">
+            <div className="flex items-center gap-4 mb-6">
+                <CustomIcons.Action />
+                <h4 className="text-2xl font-bold text-blue-400">Impacto Global del Movimiento</h4>
+            </div>
+            <div className="aspect-video bg-gradient-to-br from-gray-900/80 to-black rounded-xl overflow-hidden relative">
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center space-y-4">
+                        <div className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500 animate-pulse">
+                            2.1M+
+                        </div>
+                        <div className="text-xl text-gray-400">
+                            Activistas Unidos por el Clima
+                        </div>
+                    </div>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+            </div>
+        </div>
+    </div>
+);
+// Demands Section Component
+const DemandsSection = () => (
+    <div className="space-y-8 animate-fadeIn">
+        <h3 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-300 leading-tight sm:text-5xl">
+            Exigencias para el Cambio
+        </h3>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <DemandCard
+                title="Para Gobiernos"
+                icon={CustomIcons.Warning}
+                demands={[
+                    "Declaración inmediata de emergencia climática global",
+                    "Transición completa a energías renovables para 2035",
+                    "Eliminación de subsidios a combustibles fósiles",
+                    "Implementación de leyes estrictas de protección ambiental",
+                    "Inversión en infraestructura verde y resiliente"
+                ]}
+            />
+
+            <DemandCard
+                title="Para Empresas"
+                icon={CustomIcons.Crisis}
+                demands={[
+                    "Compromiso de neutralidad de carbono para 2030",
+                    "Transparencia total en emisiones y impacto ambiental",
+                    "Inversión significativa en tecnologías limpias",
+                    "Transformación hacia cadenas de suministro sostenibles",
+                    "Priorización de la economía circular"
+                ]}
+            />
+
+            <DemandCard
+                title="Para Instituciones"
+                icon={CustomIcons.Leaf}
+                demands={[
+                    "Desinversión completa de combustibles fósiles",
+                    "Integración de educación climática en programas",
+                    "Impulso a la investigación en soluciones verdes",
+                    "Adopción de políticas de cero residuos",
+                    "Promoción de prácticas sostenibles"
+                ]}
+            />
+        </div>
+
+        <div className="mt-8 p-8 bg-gradient-to-br from-black/60 to-purple-950/30 rounded-xl border border-purple-500/30 hover:from-black/70 hover:to-purple-950/40 transition-all duration-500">
+            <div className="text-center space-y-6">
+                <div className="flex justify-center mb-4">
+                    <CustomIcons.Earth />
+                </div>
+                <h4 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-300">
+                    El Momento de Actuar es Ahora
+                </h4>
+                <p className="text-gray-300 max-w-3xl mx-auto text-lg leading-relaxed">
+                    Cada voz cuenta, cada acción suma en la lucha contra el cambio climático.
+                    Unidos podemos crear el cambio que nuestro planeta necesita para las
+                    generaciones presentes y futuras.
+                </p>
+            </div>
+        </div>
+    </div>
+);
+
+// Main Dashboard Component
 const ClimateActionDashboard = ({ isVisible, onClose }) => {
     const [activeSection, setActiveSection] = useState('purpose');
     const [animateElements, setAnimateElements] = useState(false);
@@ -246,331 +478,112 @@ const ClimateActionDashboard = ({ isVisible, onClose }) => {
 
     if (!isVisible) return null;
 
+    const renderSection = () => {
+        switch (activeSection) {
+            case 'purpose':
+                return <PurposeSection />;
+            case 'crisis':
+                return <CrisisSection />;
+            case 'action':
+                return <ActionSection />;
+            case 'demands':
+                return <DemandsSection />;
+            default:
+                return <PurposeSection />;
+        }
+    };
+
     return (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-lg z-50">
-            <div className="h-full overflow-y-auto">
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-xl z-50">
+            <div className="h-full overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-800">
                 <div className="container mx-auto p-4">
-                    <div className="w-full max-w-7xl mx-auto bg-gradient-to-br from-gray-900 to-black rounded-2xl overflow-hidden shadow-2xl border border-gray-800">
-                        {/* Header con posición sticky */}
-                        <div className="sticky top-0 z-20 bg-gradient-to-br from-gray-900 to-black">
-                            <div className="relative p-8 overflow-hidden">
-                                <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-blue-500/10 animate-pulse-slow"></div>
+                    <div className="w-full max-w-7xl mx-auto bg-gradient-to-br from-gray-900 to-black rounded-2xl overflow-hidden shadow-2xl border border-gray-800/50">
+                        {/* Header Sticky */}
+                        <div className="sticky top-0 z-20 bg-gradient-to-br from-gray-900 to-black border-b border-gray-800/50">
+                            <div className="relative p-6 md:p-8 overflow-hidden">
+                                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 animate-pulse-slow"></div>
                                 <div className="relative z-10 flex justify-between items-center">
                                     <div className="flex items-center gap-6">
                                         <CustomIcons.Earth />
                                         <div>
-                                            <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300">
+                                            <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">
                                                 Acción por el Clima
                                             </h2>
                                             <p className="text-gray-400 mt-2">Unidos por un futuro sostenible</p>
                                         </div>
                                     </div>
-                                    <button
-                                        onClick={() => {
-                                            document.body.style.overflow = 'unset';
-                                            onClose();
-                                        }}
-                                        className="p-3 rounded-xl hover:bg-gray-800/50 transition-all duration-300 group"
-                                    >
-                                        <svg viewBox="0 0 24 24" className="w-6 h-6 text-gray-400 group-hover:text-red-400">
-                                            <path
-                                                d="M18 6L6 18M6 6l12 12"
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                            />
-                                        </svg>
-                                    </button>
+                                    <CloseButton onClick={onClose} />
                                 </div>
                             </div>
 
-                            {/* Navegación pegajosa */}
-                            <nav className="flex gap-3 p-4 bg-black/50 overflow-x-auto">
+                            {/* Navigation */}
+                            <div className="flex gap-3 p-4 bg-black/50 overflow-x-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-800">
                                 {sections.map(section => (
-                                    <button
+                                    <NavButton
                                         key={section.id}
+                                        section={section}
+                                        isActive={activeSection === section.id}
                                         onClick={() => setActiveSection(section.id)}
-                                        className={`
-                                            relative group flex items-center gap-3 px-6 py-3 rounded-xl
-                                            transition-all duration-500 whitespace-nowrap
-                                            ${activeSection === section.id
-                                                ? `bg-gradient-to-r ${section.color} shadow-lg scale-105`
-                                                : 'bg-gray-800/50 hover:bg-gray-700/50'
-                                            }
-                                        `}
-                                    >
-                                        <section.icon />
-                                        <span className="font-medium">{section.label}</span>
-                                        {activeSection === section.id && (
-                                            <div className="absolute inset-0 bg-white/10 rounded-xl animate-pulse-slow"></div>
-                                        )}
-                                    </button>
+                                    />
                                 ))}
-                            </nav>
+                            </div>
                         </div>
 
-                        {/* Contenido con scroll */}
-                        <div className="p-6">
-                            {activeSection === 'purpose' && (
-                                <div className="space-y-6 animate-fadeIn">
-                                    <h3 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-300">
-                                        Nuestra Misión por el Planeta
-                                    </h3>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <Card
-                                            title="Visualización de Impacto"
-                                            description="Creamos consciencia sobre la crisis climática a través de datos visuales impactantes y análisis en tiempo real de las emisiones globales."
-                                            icon={CustomIcons.Earth}
-                                            className="border-emerald-500/20"
-                                        />
-                                        <Card
-                                            title="Educación Ambiental"
-                                            description="Proporcionamos información clara y actualizada sobre el cambio climático y sus efectos en nuestro planeta y sociedades."
-                                            icon={CustomIcons.Wave}
-                                            className="border-emerald-500/20"
-                                        />
-                                        <Card
-                                            title="Movilización Global"
-                                            description="Conectamos activistas y organizaciones para crear un movimiento global unificado por la justicia climática."
-                                            icon={CustomIcons.Protest}
-                                            className="border-emerald-500/20"
-                                        />
-                                        <Card
-                                            title="Soluciones Climáticas"
-                                            description="Proponemos y promovemos soluciones concretas para la reducción de emisiones y la transición hacia energías renovables."
-                                            icon={CustomIcons.Fire}
-                                            className="border-emerald-500/20"
-                                        />
-                                    </div>
-                                </div>
-                            )}
-                            {activeSection === 'crisis' && (
-                                <div className="space-y-6 animate-fadeIn">
-                                    <h3 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-300">
-                                        Crisis Climática: La Cuenta Regresiva
-                                    </h3>
-                                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                        <div className="lg:col-span-2">
-                                            <div className="bg-black/40 p-6 rounded-xl border border-red-500/30 space-y-4">
-                                                <h4 className="text-2xl font-bold text-red-400">Punto de No Retorno</h4>
-                                                <div className="relative overflow-hidden rounded-lg h-48 bg-gray-900/50">
-                                                    <div className="absolute inset-0 flex items-center justify-center">
-                                                        <div className="text-center">
-                                                            <div className="text-4xl font-bold text-red-500">1.5°C</div>
-                                                            <div className="text-gray-400">Límite crítico de calentamiento</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <p className="text-gray-300">
-                                                    Estamos peligrosamente cerca del punto de no retorno. Las emisiones actuales
-                                                    nos llevan a un calentamiento catastrófico si no actuamos ahora.
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="space-y-6">
-                                            <Card
-                                                title="Impacto Global"
-                                                description="Los efectos del cambio climático ya son evidentes: eventos extremos, pérdida de biodiversidad y riesgo para millones."
-                                                icon={CustomIcons.Warning}
-                                                className="border-red-500/20"
-                                            />
-                                            <Card
-                                                title="Tiempo Limitado"
-                                                description="Científicos advierten que tenemos menos de una década para realizar cambios drásticos y evitar daños irreversibles."
-                                                icon={CustomIcons.Fire}
-                                                className="border-red-500/20"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {activeSection === 'action' && (
-                                <div className="space-y-6 animate-fadeIn">
-                                    <h3 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">
-                                        Acción Climática: El Momento es Ahora
-                                    </h3>
-                                    
-                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                        <div className="bg-black/40 p-6 rounded-xl border border-blue-500/30">
-                                            <div className="flex items-center gap-4 mb-6">
-                                                <CustomIcons.Wave />
-                                                <h4 className="text-2xl font-bold text-blue-400">Acciones Individuales</h4>
-                                            </div>
-                                            <div className="space-y-4">
-                                                <AnimatedActionItem
-                                                    title="Reduce tu Huella de Carbono"
-                                                    description="Calcula y reduce tu impacto personal en el planeta."
-                                                    icon={CustomIcons.Earth}
-                                                />
-                                                <AnimatedActionItem
-                                                    title="Transporte Sostenible"
-                                                    description="Utiliza bicicleta, transporte público o vehículos eléctricos."
-                                                    icon={CustomIcons.Wave}
-                                                />
-                                                <AnimatedActionItem
-                                                    title="Consumo Consciente"
-                                                    description="Elige productos locales y reduce el desperdicio."
-                                                    icon={CustomIcons.Fire}
-                                                />
-                                                <button className="w-full py-3 mt-4 bg-blue-600/20 hover:bg-blue-600/40 rounded-lg border border-blue-500/30 transition-all duration-300">
-                                                    Calcula tu Impacto →
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <div className="bg-black/40 p-6 rounded-xl border border-indigo-500/30">
-                                            <div className="flex items-center gap-4 mb-6">
-                                                <CustomIcons.Protest />
-                                                <h4 className="text-2xl font-bold text-indigo-400">Acción Comunitaria</h4>
-                                            </div>
-                                            <div className="space-y-4">
-                                                <AnimatedActionItem
-                                                    title="Únete a Movimientos"
-                                                    description="Participa en organizaciones locales y globales por el clima."
-                                                    icon={CustomIcons.Protest}
-                                                />
-                                                <AnimatedActionItem
-                                                    title="Educa e Inspira"
-                                                    description="Comparte conocimiento y motiva a otros a actuar."
-                                                    icon={CustomIcons.Wave}
-                                                />
-                                                <AnimatedActionItem
-                                                    title="Proyectos Locales"
-                                                    description="Inicia o únete a proyectos de sostenibilidad en tu comunidad."
-                                                    icon={CustomIcons.Earth}
-                                                />
-                                                <button className="w-full py-3 mt-4 bg-indigo-600/20 hover:bg-indigo-600/40 rounded-lg border border-indigo-500/30 transition-all duration-300">
-                                                    Encuentra Grupos Locales →
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="relative mt-8 p-6 bg-black/40 rounded-xl border border-blue-500/30">
-                                        <h4 className="text-2xl font-bold text-blue-400 mb-4">Impacto Global de la Acción Climática</h4>
-                                        <div className="aspect-video bg-gray-900/50 rounded-lg overflow-hidden relative">
-                                            <div className="absolute inset-0 flex items-center justify-center">
-                                                <div className="text-center">
-                                                    <div className="text-4xl font-bold text-blue-500">2.1M+</div>
-                                                    <div className="text-gray-400">Activistas Unidos Globalmente</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {activeSection === 'demands' && (
-                                <div className="space-y-6 animate-fadeIn">
-                                    <h3 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-300">
-                                        Exigencias para el Cambio
-                                    </h3>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                        <DemandCard
-                                            title="Para Gobiernos"
-                                            icon={CustomIcons.Warning}
-                                            demands={[
-                                                "Declaración de emergencia climática",
-                                                "100% energías renovables para 2035",
-                                                "Fin de subsidios a combustibles fósiles",
-                                                "Leyes estrictas de protección ambiental"
-                                            ]}
-                                        />
-                                        
-                                        <DemandCard
-                                            title="Para Empresas"
-                                            icon={CustomIcons.Fire}
-                                            demands={[
-                                                "Neutralidad de carbono para 2030",
-                                                "Transparencia en emisiones",
-                                                "Inversión en tecnologías limpias",
-                                                "Cadenas de suministro sostenibles"
-                                            ]}
-                                        />
-                                        
-                                        <DemandCard
-                                            title="Para Instituciones"
-                                            icon={CustomIcons.Earth}
-                                            demands={[
-                                                "Desinversión de combustibles fósiles",
-                                                "Educación climática obligatoria",
-                                                "Investigación en soluciones verdes",
-                                                "Políticas de cero residuos"
-                                            ]}
-                                        />
-                                    </div>
-
-                                    <div className="mt-8 p-8 bg-gradient-to-r from-purple-900/30 to-pink-900/30 rounded-xl border border-purple-500/30">
-                                        <div className="text-center space-y-4">
-                                            <h4 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-300">
-                                                ¡Únete al Movimiento!
-                                            </h4>
-                                            <p className="text-gray-300 max-w-2xl mx-auto">
-                                                El tiempo de actuar es ahora. Cada voz cuenta, cada acción suma. 
-                                                Juntos podemos crear el cambio que nuestro planeta necesita.
-                                            </p>
-                                            <div className="flex justify-center mt-6">
-                                                <button className="px-6 py-3 bg-pink-600 hover:bg-pink-500 rounded-lg transition-all duration-300">
-                                                    Comparte el Mensaje
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
+                        {/* Content */}
+                        <div className="p-6 md:p-8">
+                            {renderSection()}
                         </div>
                     </div>
                 </div>
             </div>
 
-            <style jsx>{`
-                ::-webkit-scrollbar {
-                    width: 8px;
-                }
+            <style>{`
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
 
-                ::-webkit-scrollbar-track {
-                    background: rgba(0, 0, 0, 0.1);
-                }
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: transparent;
+    }
 
-                ::-webkit-scrollbar-thumb {
-                    background: rgba(255, 255, 255, 0.2);
-                    border-radius: 4px;
-                }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+    }
 
-                ::-webkit-scrollbar-thumb:hover {
-                    background: rgba(255, 255, 255, 0.3);
-                }
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
 
-                @keyframes fadeIn {
-                    from {
-                        opacity: 0;
-                        transform: translateY(10px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-                @keyframes pulse-slow {
-                    0%, 100% {
-                        opacity: 1;
-                    }
-                    50% {
-                        opacity: 0.5;
-                    }
-                }
+    @keyframes pulse-slow {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.5;
+        }
+    }
 
-                .animate-fadeIn {
-                    animation: fadeIn 0.5s ease-out forwards;
-                }
+    .animate-fadeIn {
+        animation: fadeIn 0.5s ease-out forwards;
+    }
 
-                .animate-pulse-slow {
-                    animation: pulse-slow 3s ease-in-out infinite;
-                }
-            `}</style>
+    .animate-pulse-slow {
+        animation: pulse-slow 3s ease-in-out infinite;
+    }
+`}</style>
         </div>
     );
 };

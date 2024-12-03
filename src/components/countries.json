@@ -1,298 +1,346 @@
 {
-    "countries": [
-      {
-        "name": "UAE",
-        "lat": 23.4241,
-        "lng": 53.8478,
-        "code": "AE"
-      },
-      {
-        "name": "India",
-        "lat": 20.5937,
-        "lng": 78.9629,
-        "code": "IN"
-      },
-      {
-        "name": "Indonesia",
-        "lat": -0.7893,
-        "lng": 113.9213,
-        "code": "ID"
-      },
-      {
-        "name": "USA",
-        "lat": 37.0902,
-        "lng": -95.7129,
-        "code": "US"
-      },
-      {
-        "name": "UK",
-        "lat": 55.3781,
-        "lng": -3.4360,
-        "code": "GB"
-      },
-      {
-        "name": "Thailand",
-        "lat": 15.8700,
-        "lng": 100.9925,
-        "code": "TH"
-      },
-      {
-        "name": "Bahrain",
-        "lat": 26.0667,
-        "lng": 50.5577,
-        "code": "BH"
-      },
-      {
-        "name": "Germany",
-        "lat": 51.1657,
-        "lng": 10.4515,
-        "code": "DE"
-      },
-      {
-        "name": "Australia",
-        "lat": -25.2744,
-        "lng": 133.7751,
-        "code": "AU"
-      },
-      {
-        "name": "Canada",
-        "lat": 56.1304,
-        "lng": -106.3468,
-        "code": "CA"
-      },
-      {
-        "name": "Mexico",
-        "lat": 23.6345,
-        "lng": -102.5528,
-        "code": "MX"
-      },
-      {
-        "name": "China",
-        "lat": 35.8617,
-        "lng": 104.1954,
-        "code": "CN"
-      },
-      {
-        "name": "Ireland",
-        "lat": 53.1424,
-        "lng": -7.6921,
-        "code": "IE"
-      },
-      {
-        "name": "Cyprus",
-        "lat": 35.1264,
-        "lng": 33.4299,
-        "code": "CY"
-      },
-      {
-        "name": "Czechia",
-        "lat": 49.8175,
-        "lng": 15.4730,
-        "code": "CZ"
-      },
-      {
-        "name": "Russia",
-        "lat": 61.5240,
-        "lng": 105.3188,
-        "code": "RU"
-      },
-      {
-        "name": "Colombia",
-        "lat": 4.5709,
-        "lng": -74.2973,
-        "code": "CO"
-      },
-      {
-        "name": "Egypt",
-        "lat": 26.8206,
-        "lng": 30.8025,
-        "code": "EG"
-      },
-      {
-        "name": "Italy",
-        "lat": 41.8719,
-        "lng": 12.5674,
-        "code": "IT"
-      },
-      {
-        "name": "Norway",
-        "lat": 60.4720,
-        "lng": 8.4689,
-        "code": "NO"
-      },
-      {
-        "name": "South Africa",
-        "lat": -30.5595,
-        "lng": 22.9375,
-        "code": "ZA"
-      },
-      {
-        "name": "Switzerland",
-        "lat": 46.8182,
-        "lng": 8.2275,
-        "code": "CH"
-      },
-      {
-        "name": "Japan",
-        "lat": 36.2048,
-        "lng": 138.2529,
-        "code": "JP"
-      },
-      {
-        "name": "Iraq",
-        "lat": 33.2232,
-        "lng": 43.6793,
-        "code": "IQ"
-      },
-      {
-        "name": "Kazakhstan",
-        "lat": 48.0196,
-        "lng": 66.9237,
-        "code": "KZ"
-      },
-      {
-        "name": "Kuwait",
-        "lat": 29.3759,
-        "lng": 47.9774,
-        "code": "KW"
-      },
-      {
-        "name": "Libya",
-        "lat": 26.3351,
-        "lng": 17.2283,
-        "code": "LY"
-      },
-      {
-        "name": "Ukraine",
-        "lat": 48.3794,
-        "lng": 31.1656,
-        "code": "UA"
-      },
-      {
-        "name": "Iran",
-        "lat": 32.4279,
-        "lng": 53.6880,
-        "code": "IR"
-      },
-      {
-        "name": "Nigeria",
-        "lat": 9.0820,
-        "lng": 8.6753,
-        "code": "NG"
-      },
-      {
-        "name": "Korea",
-        "lat": 35.9078,
-        "lng": 127.7669,
-        "code": "KR"
-      },
-      {
-        "name": "Austria",
-        "lat": 47.5162,
-        "lng": 14.5501,
-        "code": "AT"
-      },
-      {
-        "name": "Poland",
-        "lat": 51.9194,
-        "lng": 19.1451,
-        "code": "PL"
-      },
-      {
-        "name": "Brazil",
-        "lat": -14.2350,
-        "lng": -51.9253,
-        "code": "BR"
-      },
-      {
-        "name": "Ecuador",
-        "lat": -1.8312,
-        "lng": -78.1834,
-        "code": "EC"
-      },
-      {
-        "name": "Venezuela",
-        "lat": 6.4238,
-        "lng": -66.5897,
-        "code": "VE"
-      },
-      {
-        "name": "Oman",
-        "lat": 21.4735,
-        "lng": 55.9754,
-        "code": "OM"
-      },
-      {
-        "name": "Malaysia",
-        "lat": 4.2105,
-        "lng": 101.9758,
-        "code": "MY"
-      },
-      {
-        "name": "Qatar",
-        "lat": 25.3548,
-        "lng": 51.1839,
-        "code": "QA"
-      },
-      {
-        "name": "Spain",
-        "lat": 40.4637,
-        "lng": -3.7492,
-        "code": "ES"
-      },
-      {
-        "name": "Saudi Arabia",
-        "lat": 23.8859,
-        "lng": 45.0792,
-        "code": "SA"
-      },
-      {
-        "name": "Slovakia",
-        "lat": 48.6690,
-        "lng": 19.6990,
-        "code": "SK"
-      },
-      {
-        "name": "Angola",
-        "lat": -11.2027,
-        "lng": 17.8739,
-        "code": "AO"
-      },
-      {
-        "name": "Algeria",
-        "lat": 28.0339,
-        "lng": 1.6596,
-        "code": "DZ"
-      },
-      {
-        "name": "Syria",
-        "lat": 34.8021,
-        "lng": 38.9968,
-        "code": "SY"
-      },
-      {
-        "name": "France",
-        "lat": 46.2276,
-        "lng": 2.2137,
-        "code": "FR"
-      },
-      {
-        "name": "Turkmenistan",
-        "lat": 38.9697,
-        "lng": 59.5563,
-        "code": "TM"
-      },
-      {
-        "name": "Argentina",
-        "lat": -38.4161,
-        "lng": -63.6167,
-        "code": "AR"
-      },
-      {
-        "name": "Netherlands",
-        "lat": 52.1326,
-        "lng": 5.2913,
-        "code": "NL"
-      }
-    ]
-  }
+  "countries": [
+    {
+      "name": "UAE",
+      "lat": 23.4241,
+      "lng": 53.8478,
+      "code": "AE",
+      "total_emissions": 17383.17817809094
+    },
+    {
+      "name": "India", 
+      "lat": 20.5937,
+      "lng": 78.9629,
+      "code": "IN",
+      "total_emissions": 38915.67683491868
+    },
+    {
+      "name": "Indonesia",
+      "lat": -0.7893,
+      "lng": 113.9213, 
+      "code": "ID",
+      "total_emissions": 14100.186512580369
+    },
+    {
+      "name": "USA",
+      "lat": 37.0902,
+      "lng": -95.7129,
+      "code": "US", 
+      "total_emissions": 226647.7655949883
+    },
+    {
+      "name": "UK",
+      "lat": 55.3781,
+      "lng": -3.4360,
+      "code": "GB",
+      "total_emissions": 118972.54967357231
+    },
+    {
+      "name": "Thailand",
+      "lat": 15.8700,
+      "lng": 100.9925,
+      "code": "TH",
+      "total_emissions": 3022.302272745106
+    },
+    {
+      "name": "Bahrain",
+      "lat": 26.0667, 
+      "lng": 50.5577,
+      "code": "BH",
+      "total_emissions": 2127.181144190014
+    },
+    {
+      "name": "Germany",
+      "lat": 51.1657,
+      "lng": 10.4515,
+      "code": "DE",
+      "total_emissions": 11581.882568430101
+    },
+    {
+      "name": "Australia",
+      "lat": -25.2744,
+      "lng": 133.7751,
+      "code": "AU",
+      "total_emissions": 13225.260300362208
+    },
+    {
+      "name": "Canada",
+      "lat": 56.1304,
+      "lng": -106.3468,
+      "code": "CA",
+      "total_emissions": 9790.472671635243
+    },
+    {
+      "name": "Mexico",
+      "lat": 23.6345,
+      "lng": -102.5528,
+      "code": "MX", 
+      "total_emissions": 26364.413410672252
+    },
+    {
+      "name": "China",
+      "lat": 35.8617,
+      "lng": 104.1954,
+      "code": "CN",
+      "total_emissions": 327091.8346071095
+    },
+    {
+      "name": "Ireland",
+      "lat": 53.1424,
+      "lng": -7.6921,
+      "code": "IE",
+      "total_emissions": 216.74008501999998
+    },
+    {
+      "name": "Cyprus",
+      "lat": 35.1264,
+      "lng": 33.4299,
+      "code": "CY",
+      "total_emissions": 2568.8833629102874
+    },
+    {
+      "name": "Czechia",
+      "lat": 49.8175,
+      "lng": 15.4730,
+      "code": "CZ",
+      "total_emissions": 2737.3500558415485
+    },
+    {
+      "name": "Russia",
+      "lat": 61.5240,
+      "lng": 105.3188,
+      "code": "RU",
+      "total_emissions": 103886.02437524701
+    },
+    {
+      "name": "Colombia",
+      "lat": 4.5709,
+      "lng": -74.2973,
+      "code": "CO",
+      "total_emissions": 3095.7561078148115
+    },
+    {
+      "name": "Egypt",
+      "lat": 26.8206,
+      "lng": 30.8025,
+      "code": "EG",
+      "total_emissions": 4318.0114331784325
+    },
+    {
+      "name": "Italy",
+      "lat": 41.8719,
+      "lng": 12.5674, 
+      "code": "IT",
+      "total_emissions": 9074.62598421214
+    },
+    {
+      "name": "Norway",
+      "lat": 60.4720,
+      "lng": 8.4689,
+      "code": "NO",
+      "total_emissions": 11912.363356376447
+    },
+    {
+      "name": "South Africa",
+      "lat": -30.5595,
+      "lng": 22.9375,
+      "code": "ZA",
+      "total_emissions": 7513.045837996014
+    },
+    {
+      "name": "Switzerland",
+      "lat": 46.8182,
+      "lng": 8.2275,
+      "code": "CH",
+      "total_emissions": 9501.869218605192  
+    },
+    {
+      "name": "Japan",
+      "lat": 36.2048,
+      "lng": 138.2529,
+      "code": "JP",
+      "total_emissions": 1836.2608004500057
+    },
+    {
+      "name": "Iraq",
+      "lat": 33.2232,
+      "lng": 43.6793,
+      "code": "IQ",
+      "total_emissions": 15188.331962594335
+    },
+    {
+      "name": "Kazakhstan",
+      "lat": 48.0196,
+      "lng": 66.9237,
+      "code": "KZ",
+      "total_emissions": 7768.91312157044
+    },
+    {  
+      "name": "Kuwait",
+      "lat": 29.3759,
+      "lng": 47.9774,
+      "code": "KW",
+      "total_emissions": 15921.810081781872
+    },
+    {
+      "name": "Libya",
+      "lat": 26.3351,
+      "lng": 17.2283,
+      "code": "LY",
+      "total_emissions": 8146.450931798071
+    },
+    {
+      "name": "Ukraine",
+      "lat": 48.3794,
+      "lng": 31.1656,
+      "code": "UA",
+      "total_emissions": 6221.653221905161
+    },
+    {
+      "name": "Iran",
+      "lat": 32.4279,
+      "lng": 53.6880,
+      "code": "IR",
+      "total_emissions": 43111.69333717274
+    },
+    {
+      "name": "Nigeria",
+      "lat": 9.0820,
+      "lng": 8.6753,
+      "code": "NG",
+      "total_emissions": 10243.434642540673
+    },
+    {
+      "name": "Korea",
+      "lat": 35.9078,
+      "lng": 127.7669,
+      "code": "KR",
+      "total_emissions": 4103.6786217367035
+    },
+    {
+      "name": "Austria",
+      "lat": 47.5162,
+      "lng": 14.5501,
+      "code": "AT",
+      "total_emissions": 1014.1617105033079
+    },
+    {
+      "name": "Poland",
+      "lat": 51.9194,
+      "lng": 19.1451,
+      "code": "PL",
+      "total_emissions": 29470.19145508587
+    },
+    {
+      "name": "Brazil",
+      "lat": -14.2350,
+      "lng": -51.9253,
+      "code": "BR",
+      "total_emissions": 11116.453123797799  
+    },
+    {
+      "name": "Ecuador",
+      "lat": -1.8312,
+      "lng": -78.1834,
+      "code": "EC",
+      "total_emissions": 1922.4021016423264
+    },
+    {
+      "name": "Venezuela",
+      "lat": 6.4238,
+      "lng": -66.5897, 
+      "code": "VE",
+      "total_emissions": 16900.996488655786
+    },
+    {
+      "name": "Oman",
+      "lat": 21.4735,
+      "lng": 55.9754,
+      "code": "OM",
+      "total_emissions": 4386.740153922608
+    },
+    {
+      "name": "Malaysia",
+      "lat": 4.2105,
+      "lng": 101.9758,
+      "code": "MY", 
+      "total_emissions": 9130.304292377099
+    },
+    {
+      "name": "Qatar",
+      "lat": 25.3548,
+      "lng": 51.1839,
+      "code": "QA",
+      "total_emissions": 8404.877185456387
+    },
+    {
+      "name": "Spain",
+      "lat": 40.4637,
+      "lng": -3.7492,
+      "code": "ES",
+      "total_emissions": 4584.290069151957
+    },
+    {
+      "name": "Saudi Arabia",
+      "lat": 23.8859, 
+      "lng": 45.0792,
+      "code": "SA",
+      "total_emissions": 68831.53710380488
+    },
+    {
+      "name": "Slovakia",
+      "lat": 48.6690,
+      "lng": 19.6990,
+      "code": "SK",
+      "total_emissions": 104.49950780420204
+    },
+    {
+      "name": "Angola",
+      "lat": -11.2027,
+      "lng": 17.8739, 
+      "code": "AO",
+      "total_emissions": 3281.2314940264782
+    },
+    {
+      "name": "Algeria",
+      "lat": 28.0339,
+      "lng": 1.6596,
+      "code": "DZ",
+      "total_emissions": 14954.696918531457
+    },
+    {
+      "name": "Syria",
+      "lat": 34.8021,
+      "lng": 38.9968,
+      "code": "SY",
+      "total_emissions": 1578.270985100816
+    },
+    {
+      "name": "France",
+      "lat": 46.2276,
+      "lng": 2.2137,
+      "code": "FR",
+      "total_emissions": 17583.556638931055
+    },
+    {
+      "name": "Turkmenistan",
+      "lat": 38.9697,
+      "lng": 59.5563,
+      "code": "TM",
+      "total_emissions": 4222.7028687985
+    },
+    {
+      "name": "Argentina",
+      "lat": -38.4161,
+      "lng": -63.6167,
+      "code": "AR",
+      "total_emissions": 2038.9760778870866
+    },
+    {
+      "name": "Netherlands",
+      "lat": 52.1326,
+      "lng": 5.2913,
+      "code": "NL"
+    }
+  ]
+}
